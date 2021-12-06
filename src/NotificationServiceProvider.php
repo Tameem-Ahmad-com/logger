@@ -56,16 +56,18 @@ class NotificationServiceProvider extends ServiceProvider
     protected function bootForConsole(): void
     {
 
-      //publishing config file
+        //publishing config file
         $this->publishes([
             __DIR__ . '/./config/config.php' => config_path('debbuger.php'),
         ], 'config');
-      //publishing migrations
-      $this->publishes([
-        __DIR__ . '/./database/migrations/create_debugging_logs_table.php.stub' =>
-         database_path('migrations/' . date('Y_m_d_His', time()) . '_create_debugging_logs_table.php'),
-        // you can add any number of migrations here
-      ], 'migrations');
+        //publishing migrations
+        if (!class_exists('CreateDebuggingLogTable')) {
+            $this->publishes([
+                __DIR__ . '/./database/migrations/create_debugging_logs_table.php.stub' =>
+                database_path('migrations/' . date('Y_m_d_His', time()) . '_create_debugging_logs_table.php'),
+                // you can add any number of migrations here
+            ], 'migrations');
+        }
 
         // Publishing the views.
         /*$this->publishes([
