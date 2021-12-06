@@ -1,5 +1,5 @@
 {
-    "name": "computan/debbuer",
+    "name": "computan/debugger",
     "description": "provide notification to developer on each exception",
     "type": "project",
     "license": "MIT",
@@ -21,13 +21,6 @@
             "providers": [
                 "Computan\\Debugger\\DebuggerServiceProvider"
             ]
-        }
-    },
-    "repositories": {
-        "packagist.org": false,
-        "private-packagist": {
-            "type": "composer",
-            "url": "https://repo.packagist.com/tameem-ahmad-com/"
         }
     }
 }
