@@ -59,7 +59,7 @@ class NotificationServiceProvider extends ServiceProvider
          //Export the migration
       if (! class_exists('CreateDebuggingLogTable')) {
         $this->publishes([
-          __DIR__ . '/../database/migrations/create_posts_table.php.stub' => database_path('migrations/' . date('Y_m_d_His', time()) . '_create_debugging_logs_table.php'),
+          __DIR__ . '/../database/migrations/create_debugging_logs_table.php.stub' => database_path('migrations/' . date('Y_m_d_His', time()) . '_create_debugging_logs_table.php'),
           // you can add any number of migrations here
         ], 'migrations');
       }
