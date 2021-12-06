@@ -15,12 +15,6 @@
         }
 
     },
-    "require": {},
-    "extra": {
-        "laravel": {
-            "providers": [
-                "Computan\\Debugger\\DebuggerServiceProvider"
-            ]
-        }
-    }
+    "require": {}
+
 }
