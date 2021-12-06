@@ -15,7 +15,7 @@ class NotificationServiceProvider extends ServiceProvider
     {
         // $this->loadTranslationsFrom(__DIR__.'/../resources/lang', 'computan');
         // $this->loadViewsFrom(__DIR__.'/../resources/views', 'computan');
-        // $this->loadMigrationsFrom(__DIR__.'/../database/migrations');
+        $this->loadMigrationsFrom(__DIR__ . '/../database/migrations');
         // $this->loadRoutesFrom(__DIR__.'/routes.php');
 
         // Publishing is only necessary when using the CLI.
@@ -31,8 +31,7 @@ class NotificationServiceProvider extends ServiceProvider
      */
     public function register(): void
     {
-        $this->mergeConfigFrom(__DIR__ . '/../config/notification.php', 'notification');
-
+        $this->mergeConfigFrom(__DIR__.'/../config/config.php', 'notifications');
         // Register the service the package provides.
         $this->app->singleton('notification', function ($app) {
             return new Notification;
@@ -56,17 +55,12 @@ class NotificationServiceProvider extends ServiceProvider
      */
     protected function bootForConsole(): void
     {
-        //Export the migration
-        if (!class_exists('CreateDebuggingLogTable')) {
-            $this->publishes([
-                __DIR__ . '/../database/migrations/create_debugging_logs_table.php.stub' => database_path('migrations/' . date('Y_m_d_His', time()) . '_create_debugging_logs_table.php'),
-                // you can add any number of migrations here
-            ], 'migrations');
-        }
-        // Publishing the configuration file.
-        $this->publishes([
-            __DIR__ . '/../config/debugger.php' => config_path('debugger.php'),
-        ], 'config');
+
+
+        // $this->publishes([
+        //     __DIR__ . '/../config/config.php' => config_path('blogpackage.php'),
+        // ], 'config');
+
 
         // Publishing the views.
         /*$this->publishes([
