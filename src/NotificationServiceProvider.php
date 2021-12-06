@@ -58,7 +58,7 @@ class NotificationServiceProvider extends ServiceProvider
 
 
         $this->publishes([
-            __DIR__ . '/../config/config.php' => config_path('notification.php'),
+            __DIR__ . '/./config/config.php' => config_path('notification.php'),
         ], 'config');
 
 
