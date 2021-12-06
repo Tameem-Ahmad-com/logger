@@ -11,9 +11,12 @@ class CreateDebuggingLogTable extends Migration
         Schema::connection(config('debbuger.channels.database.connection'))->create(config('debbuger.channels.database.table'), function (Blueprint $table) {
                 $table->engine = 'InnoDB';
                 $table->bigIncrements('id');
+                $table->longText('name');
                 $table->longText('message');
-                $table->longText('context');
-                $table->text('type');
+                $table->string('file')->nullable();
+                $table->longText('line');
+                $table->string('type');
+                $table->timestamps();
                
         });
     }

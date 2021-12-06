@@ -9,16 +9,13 @@ use Illuminate\Database\Eloquent\Model;
 class Debbuger extends Model
 {
     protected $fillable = [
-        'instance',
-        'channel',
-        'message',
-        'level',
-        'context'
+        'name',
+        'message', 
+        'file',
+        'line',
+        'type'
     ];
 
-    protected $casts = [
-        'context' => 'array',
-    ];
 
     protected $dateFormat = 'Y-m-d H:i:s.u';
 
