@@ -1,7 +1,7 @@
 {
     "name": "computan/debugger",
     "description": "provide notification to developer on each exception",
-    "type": "project",
+    "type": "library",
     "license": "MIT",
     "authors": [{
         "name": "Tameem Ahmad",
