@@ -2,6 +2,7 @@
 
 namespace Computan\App\Exception;
 
+use Exception;
 use Throwable;
 use Computan\App\Models\Debbuger;
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
@@ -36,14 +37,20 @@ class Handler extends ExceptionHandler
     public function register()
     {
         $this->reportable(function (Throwable $e) {
-            $exception = [
-                "name" => get_class($e),
-                "message" => $e->getMessage(),
-                "file" => $e->getFile(),
-                "line" => $e->getLine(),
-                "type" => 'exception',
-            ];
-            Debbuger::create($exception);
+           
         });
+    }
+    public function report(Throwable $e) {
+
+        $exception = [
+            "name" => get_class($e),
+            "message" => $e->getMessage(),
+            "file" => $e->getFile(),
+            "line" => $e->getLine(),
+            "type" => 'exception',
+        ];
+        Debbuger::create($exception);
+        parent::report($e);
+        parent::report($e);
     }
 }
