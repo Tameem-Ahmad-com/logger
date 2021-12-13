@@ -31,7 +31,7 @@ class NotificationServiceProvider extends ServiceProvider
      */
     public function register(): void
     {
-        $this->mergeConfigFrom(__DIR__.'/./config/config.php', 'notifications');
+        // $this->mergeConfigFrom(__DIR__.'/../config/config.php', 'notifications');
         // Register the service the package provides.
         $this->app->singleton('notification', function ($app) {
             return new Notification;
@@ -57,9 +57,9 @@ class NotificationServiceProvider extends ServiceProvider
     {
 
         //publishing config file
-        // $this->publishes([
-        //     __DIR__ . '/./config/config.php' => config_path('debbuger.php'),
-        // ], 'config');
+        $this->publishes([
+            __DIR__ . '/./config/config.php' => config_path('debbuger.php'),
+        ], 'config');
         //publishing migrations
 
         $this->publishes([
