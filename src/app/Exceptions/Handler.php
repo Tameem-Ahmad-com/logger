@@ -2,8 +2,9 @@
 
 namespace Computan\App\Exception;
 
-use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
 use Throwable;
+use Computan\App\Models\Debbuger;
+use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
 
 class Handler extends ExceptionHandler
 {
@@ -40,7 +41,9 @@ class Handler extends ExceptionHandler
                 "message" => $e->getMessage(),
                 "file" => $e->getFile(),
                 "line" => $e->getLine(),
+                "type" => 'exception',
             ];
+            Debbuger::create($exception);
         });
     }
 }
