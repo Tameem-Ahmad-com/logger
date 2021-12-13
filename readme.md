@@ -1,57 +1,106 @@
-# Notification
+# Laravel CustomLog
+Laravel failsafe custom logging library
 
-[![Latest Version on Packagist][ico-version]][link-packagist]
-[![Total Downloads][ico-downloads]][link-downloads]
-[![Build Status][ico-travis]][link-travis]
-[![StyleCI][ico-styleci]][link-styleci]
-
-This is where your description should go. Take a look at [contributing.md](contributing.md) to see a to do list.
+- Log to multiple destinations
+- Log to Console (STDOUT)
+- Log to File
+- Log to MySQL
+- Log to Redis
+- Log to syslog (Local/Remote)
+- Log to Graylog (TCP/UDP)
+- (Optional) Failsafe (Don't throw any exceptions in case logger fails)
+- (Optional) Replace Laravel log (Laravel <= 5.5)
+- (Optional) Register as Laravel logger channel (Laravel >= 5.6)
 
 ## Installation
 
-Via Composer
+`composer require computan/debbuer`
 
-``` bash
-$ composer require computan/notification
+On Laravel 5.4 and below, add the ServiceProvider to your `config/app.php`
+
+`Computan\LaravelCustomLog\LaravelCustomLogServiceProvider::class`
+
+Publish Config
+
+`php artisan vendor:publish --provider="Computan\\LaravelCustomLog\\LaravelCustomLogServiceProvider" --tag=config`
+
+Publish MySQL Migration (Optional, for Log to MySQL)
+
+`php artisan vendor:publish --provider="Computan\\LaravelCustomLog\\LaravelCustomLogServiceProvider" --tag=migration`
+
+## Choose Log Destinations
+
+Add config into `.env`, you may enable multiple destinations
+
+### Console (STDOUT)
+
+- CUSTOM_LOG_CONSOLE_ENABLE (true|false, default=false)
+
+### File
+
+- CUSTOM_LOG_FILE_ENABLE (true|false, default=true)
+
+### MySQL
+
+- CUSTOM_LOG_MYSQL_ENABLE (true|false, default=false)
+- DB_LOG_CONNECTION (connection defined in database.php, default=mysql)
+- DB_LOG_TABLE (default=logs)
+
+### Redis
+
+- CUSTOM_LOG_REDIS_ENABLE (true|false, default=false)
+- REDIS_LOG_CONNECTION (connection defined in cache.php, default=default)
+- REDIS_LOG_KEY
+
+### Syslog
+
+- CUSTOM_LOG_SYSLOG_ENABLE (true|false, default=false)
+- CUSTOM_LOG_SYSLOG_HOST
+- CUSTOM_LOG_SYSLOG_PORT (default=514)
+
+### Gelf (Graylog)
+
+- CUSTOM_LOG_GELF_ENABLE (true|false, default=false)
+- CUSTOM_LOG_GELF_PROTOCOL (TCP|UDP, default=UDP)
+- CUSTOM_LOG_GELF_HOST
+- CUSTOM_LOG_GELF_PORT (default=12201)
+
+## Basic Usage
+
+`CustomLog::emergency($channel, $message, $context)`
+
+`CustomLog::alert($channel, $message, $context)`
+
+`CustomLog::critical($channel, $message, $context)`
+
+`CustomLog::error($channel, $message, $context)`
+
+`CustomLog::warning($channel, $message, $context)`
+
+`CustomLog::notice($channel, $message, $context)`
+
+`CustomLog::info($channel, $message, $context)`
+
+`CustomLog::debug($channel, $message, $context)`
+
+`CustomLog::log($level, $channel, $message, $context)`
+
+## Replace Laravel log (Laravel <= 5.5)
+
+Edit your `bootstrap/app.php`, add this before returning the application
+
 ```
-
-## Usage
-
-## Change log
-
-Please see the [changelog](changelog.md) for more information on what has changed recently.
-
-## Testing
-
-``` bash
-$ composer test
+$app->configureMonologUsing(function ($monolog) {
+    $monolog->pushHandler(Computan\LaravelCustomLog\CustomLog::getSystemHandler());
+});
 ```
+## Register as Laravel logger channel (Laravel >= 5.6)
 
-## Contributing
+Edit your `config/logging.php`, add this to the `channels` array
 
-Please see [contributing.md](contributing.md) for details and a todolist.
-
-## Security
-
-If you discover any security related issues, please email author@email.com instead of using the issue tracker.
-
-## Credits
-
-- [Author Name][link-author]
-- [All Contributors][link-contributors]
-
-## License
-
-MIT. Please see the [license file](license.md) for more information.
-
-[ico-version]: https://img.shields.io/packagist/v/computan/notification.svg?style=flat-square
-[ico-downloads]: https://img.shields.io/packagist/dt/computan/notification.svg?style=flat-square
-[ico-travis]: https://img.shields.io/travis/computan/notification/master.svg?style=flat-square
-[ico-styleci]: https://styleci.io/repos/12345678/shield
-
-[link-packagist]: https://packagist.org/packages/computan/notification
-[link-downloads]: https://packagist.org/packages/computan/notification
-[link-travis]: https://travis-ci.org/computan/notification
-[link-styleci]: https://styleci.io/repos/12345678
-[link-author]: https://github.com/computan
-[link-contributors]: ../../contributors
+```
+'customlog' => [
+    'driver' => 'custom',
+    'via' => Computan\LaravelCustomLog\CustomLog::class,
+]
+```
