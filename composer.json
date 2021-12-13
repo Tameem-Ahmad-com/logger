@@ -1,6 +1,6 @@
 {
     "name": "computan/notification",
-    "description": ":package_description",
+    "description": "this is private package to use for logging and emailing to developer and client",
     "license": "MIT",
     "authors": [{
         "name": "Tameem Ahmad Shahzad",
@@ -10,31 +10,24 @@
     "homepage": "https://github.com/computan/notification",
     "keywords": ["Laravel", "Notification"],
     "require": {
-        "illuminate/support": "~7|~8",
-        "monolog/monolog": "^2.3"
+        "php": ">=7.0.0"
     },
-    "require-dev": {
-        "phpunit/phpunit": "~9.0",
-        "orchestra/testbench": "~5|~6"
+    "suggest": {
+        "graylog2/gelf-php": "Required for Gelf/Graylog logging",
+        "predis/predis": "Required for Redis logging"
     },
     "autoload": {
         "psr-4": {
-            "Computan\\Notification\\": "src/"
-        }
-    },
-    "autoload-dev": {
-        "psr-4": {
-            "Computan\\Notification\\Tests\\": "tests"
+            "Computan\\LaravelCustomLog\\": "src"
         }
     },
     "extra": {
         "laravel": {
             "providers": [
-                "Computan\\Notification\\NotificationServiceProvider"
-            ],
-            "aliases": {
-                "Notification": "Computan\\Notification\\Facades\\Notification"
-            }
+                "Computan\\LaravelCustomLog\\LaravelCustomLogServiceProvider"
+            ]
         }
-    }
+    },
+    "minimum-stability": "dev",
+    "prefer-stable": true
 }
