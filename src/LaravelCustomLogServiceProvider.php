@@ -21,11 +21,13 @@ class LaravelCustomLogServiceProvider extends ServiceProvider
     public function boot()
     {
         /* Binding package exception into laravel ExceptionHandler interface*/
-        $this->app->bind(ExceptionHandler::class, Handler::class);
+        $this->app->bind(
+            ExceptionHandler::class,
+            Handler::class
+        );
         /* getting fialed job exception */
         Queue::failing(function (JobFailed $event) {
-
-            Notifications::error('laravel', 'job', json_encode(collect($event->exception)->toArray()));
+            Notifications::error('laravel', 'job', collect($event->exception)->toArray());
         });
 
         $this->publishes([
