@@ -38,10 +38,7 @@ class Handler extends ExceptionHandler
         $this->reportable(function (Throwable $e) {
             if ($this->shouldntReport($e)) return;
             $class = (new \ReflectionClass($e))->getShortName();
-            Notifications::error('exceptions', "Exception {$class} | {$e->getMessage()}", [
-                'inputs'=>Notifications::requestInfo(),
-                'exception'=>$e
-            ]);
+            Notifications::error('exceptions', "Exception {$class} | {$e->getMessage()}",json_encode(collect($e)->toArray()));
            
         });
     }
