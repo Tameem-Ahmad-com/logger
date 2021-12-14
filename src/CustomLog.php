@@ -73,6 +73,11 @@ class CustomLog
             $handlers[] = $redisHandler;
         }
 
+        if (config('custom-log.redis.enable')) {
+            $mysqlHandler = new MysqlHandler(config('custom-log.mysql.connection'),config('custom-log.mysql.table'),Logger::DEBUG, true);
+            $handlers[] = $mysqlHandler;
+        }
+
         if (config('custom-log.syslog.enable')) {
             if (config('custom-log.syslog.host')) {
                 $handlers[] = new SyslogUdpHandler(config('custom-log.syslog.host'), config('custom-log.syslog.port'), LOG_USER, Logger::DEBUG, true, config('times.application_name'));
@@ -80,19 +85,7 @@ class CustomLog
                 $handlers[] = new SyslogHandler(config('times.application_name'));
             }
         }
-
-        if (config('custom-log.gelf.enable')) {
-            if (config('custom-log.gelf.protocol') == 'TCP') {
-                $transport = new \Gelf\Transport\TcpTransport(config('custom-log.gelf.host'), config('custom-log.gelf.port'));
-            } else {
-                $transport = new \Gelf\Transport\UdpTransport(config('custom-log.gelf.host'), config('custom-log.gelf.port'), \Gelf\Transport\UdpTransport::CHUNK_SIZE_LAN);
-            }
-            $publisher = new \Gelf\Publisher($transport);
-            $gelfHandler = new GelfHandler($publisher);
-            $handlers[] = $gelfHandler;
-        }
-
-        return $handlers;
+         return $handlers;
     }
 
     public static function getSystemLogger() {
