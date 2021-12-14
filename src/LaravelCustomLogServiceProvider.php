@@ -23,7 +23,7 @@ class LaravelCustomLogServiceProvider extends ServiceProvider
         
         $this->publishes([
             
-            __DIR__ . '/migrations/2018_07_07_000000_create_logs_table.php' => base_path('database/migrations/2018_07_07_000000_create_logs_table.php')
+            __DIR__ . '/migrations/2021_12_13_000000_create_logs_table.php' => base_path('database/migrations/2021_12_13_000000s_create_logs_table.php')
         ], 'migration');
     }
 
