@@ -24,11 +24,9 @@ class CreateLogsTable extends Migration
                 $table->string('level_name');
                 $table->text('message');
                 $table->text('context');
-
                 $table->string('remote_addr', 39)->nullable();
                 $table->string('user_agent')->nullable();
                 $table->integer('created_by')->nullable()->index();
-
                 $table->dateTime('created_at');
             }
         );

@@ -2,17 +2,17 @@
 
 namespace Computan\LaravelCustomLog;
 
-use Computan\LaravelCustomLog\MysqlHandler;
-use Monolog\Handler\GelfHandler;
-use Monolog\Handler\RedisHandler;
-use Monolog\Handler\RotatingFileHandler;
+use Monolog\Logger;
+use Illuminate\Support\Carbon;
+use Monolog\Handler\GroupHandler;
+use Illuminate\Support\Facades\DB;
 use Monolog\Handler\StreamHandler;
 use Monolog\Handler\SyslogHandler;
-use Monolog\Handler\SyslogUdpHandler;
-use Monolog\Handler\GroupHandler;
-use Monolog\Handler\WhatFailureGroupHandler;
-use Monolog\Logger;
 use Monolog\Formatter\LineFormatter;
+use Monolog\Handler\SyslogUdpHandler;
+use Monolog\Handler\RotatingFileHandler;
+use Computan\LaravelCustomLog\MysqlHandler;
+use Monolog\Handler\WhatFailureGroupHandler;
 
 class Notifications
 {
@@ -29,7 +29,8 @@ class Notifications
         return self::getSystemLogger();
     }
 
-    public static function getChannel($channel) {
+    public static function getChannel($channel)
+    {
         if (isset(self::$channels[$channel])) {
             return self::$channels[$channel];
         } else {
@@ -47,7 +48,8 @@ class Notifications
         }
     }
 
-    public static function getHandlers($channel) {
+    public static function getHandlers($channel)
+    {
         $handlers = [];
 
         $formatter = new LineFormatter(null, null, true, true);
@@ -68,7 +70,7 @@ class Notifications
             $handlers[] = $fileHandler;
         }
         if (config('custom-log.mysql.enable')) {
-            $mysqlHandler = new MysqlHandler(config('custom-log.mysql.connection'),config('custom-log.mysql.table'),Logger::DEBUG, true);
+            $mysqlHandler = new MysqlHandler(config('custom-log.mysql.connection'), config('custom-log.mysql.table'), Logger::DEBUG, true);
             $handlers[] = $mysqlHandler;
         }
 
@@ -79,14 +81,16 @@ class Notifications
                 $handlers[] = new SyslogHandler(config('times.application_name'));
             }
         }
-         return $handlers;
+        return $handlers;
     }
 
-    public static function getSystemLogger() {
+    public static function getSystemLogger()
+    {
         return self::getChannel('laravel');
     }
 
-    public static function getSystemHandler() {
+    public static function getSystemHandler()
+    {
         if (config('custom-log.failsafe')) {
             return new WhatFailureGroupHandler(self::getSystemLogger()->getHandlers());
         } else {
@@ -94,40 +98,73 @@ class Notifications
         }
     }
 
-    public static function emergency($channel = 'laravel', $content = null, $context = []) {
+    public static function emergency($channel = 'laravel', $content = null, $context = [])
+    {
         self::log(Logger::EMERGENCY, $channel, $content, $context);
     }
 
-    public static function alert($channel = 'laravel', $content = null, $context = []) {
+    public static function alert($channel = 'laravel', $content = null, $context = [])
+    {
         self::log(Logger::ALERT, $channel, $content, $context);
     }
 
-    public static function critical($channel = 'laravel', $content = null, $context = []) {
+    public static function critical($channel = 'laravel', $content = null, $context = [])
+    {
         self::log(Logger::CRITICAL, $channel, $content, $context);
     }
 
-    public static function error($channel = 'laravel', $content = null, $context = []) {
+    public static function error($channel = 'laravel', $content = null, $context = [])
+    {
         self::log(Logger::ERROR, $channel, $content, $context);
     }
 
-    public static function warning($channel = 'laravel', $content = null, $context = []) {
+    public static function warning($channel = 'laravel', $content = null, $context = [])
+    {
         self::log(Logger::WARNING, $channel, $content, $context);
     }
 
-    public static function notice($channel = 'laravel', $content = null, $context = []) {
+    public static function notice($channel = 'laravel', $content = null, $context = [])
+    {
         self::log(Logger::NOTICE, $channel, $content, $context);
     }
 
-    public static function info($channel = 'laravel', $content = null, $context = []) {
+    public static function info($channel = 'laravel', $content = null, $context = [])
+    {
         self::log(Logger::INFO, $channel, $content, $context);
     }
 
-    public static function debug($channel = 'laravel', $content = null, $context = []) {
+    public static function debug($channel = 'laravel', $content = null, $context = [])
+    {
         self::log(Logger::DEBUG, $channel, $content, $context);
     }
 
-    public static function log($level, $channel = 'laravel', $content = null, $context = []) {
+    public static function log($level, $channel = 'laravel', $content = null, $context = [])
+    {
         $log = self::getChannel($channel);
         $log->addRecord($level, $content, $context);
+    }
+
+    /**
+     * getDailyLogs
+     *
+     * @return \Illuminate\Support\Collection
+     */
+    public static function getDailyLogs()
+    {
+
+        return DB::table(config('custom-log.mysql.table'))->whereDate('created_at', Carbon::today())->get();
+    }
+    /**
+     * getMonthlyLogs
+     *
+     * @return \Illuminate\Support\Collection
+     */
+    public static function getMonthlyLogs()
+    {
+
+        return DB::table(config('custom-log.mysql.table'))->whereMonth(
+            'created_at',
+            Carbon::now()->format('m')
+        )->get();
     }
 }
