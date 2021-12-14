@@ -12,10 +12,7 @@
     "require": {
         "php": ">=7.0.0"
     },
-    "suggest": {
-        "graylog2/gelf-php": "Required for Gelf/Graylog logging",
-        "predis/predis": "Required for Redis logging"
-    },
+
     "autoload": {
         "psr-4": {
             "Computan\\LaravelCustomLog\\": "src"

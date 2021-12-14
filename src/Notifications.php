@@ -14,7 +14,7 @@ use Monolog\Handler\WhatFailureGroupHandler;
 use Monolog\Logger;
 use Monolog\Formatter\LineFormatter;
 
-class CustomLog
+class Notifications
 {
     private static $channels = [];
 
@@ -67,13 +67,7 @@ class CustomLog
             $fileHandler->setFormatter($formatter);
             $handlers[] = $fileHandler;
         }
-
-        if (config('custom-log.redis.enable')) {
-            $redisHandler = new RedisHandler(\Illuminate\Support\Facades\Redis::connection(config('custom-log.redis.connection'))->client(), config('custom-log.redis.key'));
-            $handlers[] = $redisHandler;
-        }
-
-        if (config('custom-log.redis.enable')) {
+        if (config('custom-log.mysql.enable')) {
             $mysqlHandler = new MysqlHandler(config('custom-log.mysql.connection'),config('custom-log.mysql.table'),Logger::DEBUG, true);
             $handlers[] = $mysqlHandler;
         }
