@@ -11,13 +11,16 @@ use Monolog\Handler\SyslogHandler;
 use Illuminate\Support\Facades\Auth;
 use Monolog\Formatter\LineFormatter;
 use Monolog\Handler\SyslogUdpHandler;
+use Illuminate\Queue\Events\JobFailed;
 use Monolog\Handler\RotatingFileHandler;
 use Computan\LaravelCustomLog\MysqlHandler;
 use Monolog\Handler\WhatFailureGroupHandler;
+use Illuminate\Notifications\Messages\MailMessage;
 
 class Notifications
 {
     private static $channels = [];
+    protected JobFailed $event;
 
     /**
      * Create a custom Monolog instance.
@@ -187,5 +190,30 @@ class Notifications
             'created_at',
             Carbon::now()->format('m')
         )->get();
+    }
+   
+
+    public function setEvent(JobFailed $event): self
+    {
+        $this->event = $event;
+
+        return $this;
+    }
+
+     /**
+     * toMail
+     *
+     * @param  mixed $notifiable
+     * @return MailMessage
+     */
+    public function toMail($notifiable): MailMessage
+    {
+        return (new MailMessage)
+            ->error()
+            ->subject('A job failed at '.config('app.url'))
+            ->line("Exception message: {$this->event->exception->getMessage()}")
+            ->line("Job class: {$this->event->job->resolveName()}")
+            ->line("Job body: {$this->event->job->getRawBody()}")
+            ->line("Exception: {$this->event->exception->getTraceAsString()}");
     }
 }
