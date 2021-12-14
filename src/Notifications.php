@@ -8,6 +8,7 @@ use Monolog\Handler\GroupHandler;
 use Illuminate\Support\Facades\DB;
 use Monolog\Handler\StreamHandler;
 use Monolog\Handler\SyslogHandler;
+use Illuminate\Support\Facades\Auth;
 use Monolog\Formatter\LineFormatter;
 use Monolog\Handler\SyslogUdpHandler;
 use Monolog\Handler\RotatingFileHandler;
@@ -142,6 +143,26 @@ class Notifications
     {
         $log = self::getChannel($channel);
         $log->addRecord($level, $content, $context);
+    }
+
+    public static function requestInfo(): array
+    {
+        $info = [];
+        $info['ip'] = request()->getClientIp();
+        $info['method'] = request()->server('REQUEST_METHOD');
+        $info['url'] = request()->url();
+        if (Auth::check()) {
+            $info['userid'] = Auth::user()->id;
+        }
+        $input = request()->all();
+        $remove = ['password', 'password_confirmation', '_token'];
+        foreach ($remove as $item) {
+            if (isset($input[$item])) {
+                unset($input[$item]);
+            }
+        }
+        $info['input'] = $input;
+        return $info;
     }
 
     /**
