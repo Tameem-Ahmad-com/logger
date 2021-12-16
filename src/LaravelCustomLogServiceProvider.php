@@ -2,10 +2,11 @@
 
 namespace Computan\LaravelCustomLog;
 
-use Computan\Jobs\SendEmailsJob;
+
 use Illuminate\Support\Facades\Queue;
 use Illuminate\Queue\Events\JobFailed;
 use Illuminate\Support\ServiceProvider;
+use Illuminate\Console\Scheduling\Schedule;
 use Illuminate\Contracts\Debug\ExceptionHandler;
 
 class LaravelCustomLogServiceProvider extends ServiceProvider
@@ -29,14 +30,6 @@ class LaravelCustomLogServiceProvider extends ServiceProvider
         /* getting fialed job exception */
         Queue::failing(function (JobFailed $event) {
             Notifications::error('laravel', 'job', collect($event->exception)->toArray());
-            $exception = [
-                "name" => get_class($event->exception),
-                "message" => $event->exception->getMessage(),
-                "file" => $event->exception->getFile(),
-                "line" => $event->exception->getLine(),
-                "type"=>"job",
-            ];
-            dispatch(new SendEmailsJob($exception))->delay(5);
         });
 
         if ($this->app->runningInConsole()) {
@@ -49,7 +42,10 @@ class LaravelCustomLogServiceProvider extends ServiceProvider
                 __DIR__ . '/migrations/2021_12_13_000000_create_logs_table.php' => base_path('database/migrations/2021_12_13_000000s_create_logs_table.php')
             ], 'migration');
 
-            $this->loadViewsFrom(__DIR__ . '/./resources/views', 'exceptions');
+            $this->app->booted(function () {
+                $schedule = $this->app->make(Schedule::class);
+                $schedule->command('send:error-email')->everyMinute();
+            });
         }
     }
 }
