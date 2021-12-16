@@ -1,6 +1,6 @@
 <?php
 
-namespace Computan\LaravelCustomLog;
+namespace Notify\LaravelCustomLog;
 
 use Monolog\Logger;
 use Illuminate\Support\Carbon;
@@ -14,7 +14,7 @@ use Monolog\Formatter\LineFormatter;
 use Monolog\Handler\SyslogUdpHandler;
 use Illuminate\Queue\Events\JobFailed;
 use Monolog\Handler\RotatingFileHandler;
-use Computan\LaravelCustomLog\MysqlHandler;
+use Notify\LaravelCustomLog\MysqlHandler;
 use Illuminate\Database\Eloquent\Collection;
 use Monolog\Handler\WhatFailureGroupHandler;
 
@@ -233,18 +233,6 @@ class Notifications
         return $this;
     }
 
-
-    /**
-     * toMail
-     *
-     * @param  mixed $exception
-     * @return bool
-     */
-    public static function toMail($exception): bool
-    {
-        Mail::to(config('custom-log.emails'))->send(new \Computan\Mail\NotificationEmail($exception));
-        return true;
-    }
 
     /**
      * getHtml

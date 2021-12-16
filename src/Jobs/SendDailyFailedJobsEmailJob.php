@@ -1,8 +1,8 @@
 <?php
 
-namespace Computan\LaravelCustomLog\Jobs;
+namespace Notify\LaravelCustomLog\Jobs;
 
-use Computan\LaravelCustomLog\Notifications;
+use Notify\LaravelCustomLog\Notifications;
 use Illuminate\Bus\Queueable;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Mail;

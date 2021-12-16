@@ -1,5 +1,5 @@
 <?php
-namespace Computan\LaravelCustomLog;
+namespace Notify\LaravelCustomLog;
 
 use DB;
 use Illuminate\Support\Facades\Auth;

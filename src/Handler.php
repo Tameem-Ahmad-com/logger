@@ -1,15 +1,10 @@
 <?php
 
-namespace Computan\LaravelCustomLog;
+namespace Notify\LaravelCustomLog;
 
 use Throwable;
 use ReflectionClass;
-
-use Illuminate\Mail\Message;
-use Computan\Jobs\SendEmailsJob;
-use Computan\Jobs\SendExceptionEmailJob;
-use Illuminate\Support\Facades\Mail;
-use Computan\LaravelCustomLog\Notifications;
+use Notify\LaravelCustomLog\Notifications;
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
 
 class Handler extends ExceptionHandler

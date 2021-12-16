@@ -1,5 +1,5 @@
 {
-    "name": "computan/notification",
+    "name": "notify/notification",
     "description": "this is private package to use for logging and emailing to developer and client",
     "license": "MIT",
     "authors": [{
@@ -15,14 +15,14 @@
 
     "autoload": {
         "psr-4": {
-            "Computan\\LaravelCustomLog\\": "src"
+            "Notify\\LaravelCustomLog\\": "src"
 
         }
     },
     "extra": {
         "laravel": {
             "providers": [
-                "Computan\\LaravelCustomLog\\LaravelCustomLogServiceProvider"
+                "Notify\\LaravelCustomLog\\LaravelCustomLogServiceProvider"
             ]
         }
     },

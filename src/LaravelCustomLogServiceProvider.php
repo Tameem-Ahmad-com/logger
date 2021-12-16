@@ -1,6 +1,6 @@
 <?php
 
-namespace Computan\LaravelCustomLog;
+namespace Notify\LaravelCustomLog;
 
 
 use Illuminate\Support\Facades\Queue;
@@ -8,8 +8,8 @@ use Illuminate\Queue\Events\JobFailed;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Console\Scheduling\Schedule;
 use Illuminate\Contracts\Debug\ExceptionHandler;
-use Computan\LaravelCustomLog\Jobs\SendExceptionEmailJob;
-use Computan\LaravelCustomLog\Jobs\SendDailyFailedJobsEmailJob;
+use Notify\LaravelCustomLog\Jobs\SendExceptionEmailJob;
+use Notify\LaravelCustomLog\Jobs\SendDailyFailedJobsEmailJob;
 
 class LaravelCustomLogServiceProvider extends ServiceProvider
 {
