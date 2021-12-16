@@ -42,9 +42,10 @@ class LaravelCustomLogServiceProvider extends ServiceProvider
                 __DIR__ . '/migrations/2021_12_13_000000_create_logs_table.php' => base_path('database/migrations/2021_12_13_000000s_create_logs_table.php')
             ], 'migration');
 
-           
+            $this->app->booted(function () {
+                $schedule = $this->app->make(Schedule::class);
+                $schedule->command('send:error-email')->everyMinute();
+            });
         }
-        $schedule = $this->app->make(Schedule::class);
-        $schedule->command('send:error-email')->everyMinute();
     }
 }
