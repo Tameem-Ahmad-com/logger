@@ -15,7 +15,7 @@
 
     "autoload": {
         "psr-4": {
-            "Computan\\LaravelCustomLog\\": "src",
+            "Computan\\LaravelCustomLog\\": "src"
 
         }
     },
