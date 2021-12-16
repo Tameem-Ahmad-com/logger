@@ -23,7 +23,7 @@ class LaravelCustomLogServiceProvider extends ServiceProvider
     public function boot()
     {
         $this->commands([
-            \Computan\Console\CommandsSendErrorEmailCommand::class,
+            \Computan\Console\Commands\SendErrorEmailCommand::class,
            
         ]);
   
