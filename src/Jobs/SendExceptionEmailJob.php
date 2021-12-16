@@ -48,7 +48,7 @@ class SendExceptionEmailJob implements ShouldQueue
         
                 <p style="background: rgba(0,0,0,0.5);color:white">' . print_r($error->context, TRUE) . '</p><br>
                   please contact with development team.';
-                  
+
                 Mail::send([], [], function ($message) use ($html) {
                     $message
                         ->to(config('custom-log.emails'))
@@ -58,7 +58,7 @@ class SendExceptionEmailJob implements ShouldQueue
                 });
                 $record = DB::table(config('custom-log.mysql.table'))->find($error->id);
                 if (!is_null($record)) {
-                    $record->update([
+                    DB::table(config('custom-log.mysql.table'))->whereKey($error->id)->update([
                         'is_email_sent' => 1
                     ]);
                 }
