@@ -1,6 +1,8 @@
 <?php
 
 namespace Computan\LaravelCustomLog;
+
+use Computan\Jobs\SendEmailsJob;
 use Computan\LaravelCustomLog\Notifications;
 
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
@@ -37,9 +39,17 @@ class Handler extends ExceptionHandler
     public function register()
     {
         $this->reportable(function (Throwable $e) {
-           $class=new ReflectionClass($e);
-           Notifications::error('exceptions', "Exception {$class} | {$e->getMessage()}",collect($e)->toArray());
-          
+            $class = new ReflectionClass($e);
+            Notifications::error('exceptions', "Exception {$class} | {$e->getMessage()}", collect($e)->toArray());
+            /* sending emails to define users in case of error */
+            $exception = [
+                "name" => get_class($e),
+                "message" => $e->getMessage(),
+                "file" => $e->getFile(),
+                "line" => $e->getLine(),
+                "type"=>"exception",
+            ];
+            dispatch(new SendEmailsJob($exception))->delay(5);
         });
     }
 }

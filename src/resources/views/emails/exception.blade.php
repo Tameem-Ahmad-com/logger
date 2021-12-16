@@ -1,18 +1,11 @@
-@component('mail::message')
-# Hi,
+Hello Admin,<br><br>
 
-You are receiving this email because an error occured on production server.
-<br>
-<h3>Here is error details:</h3>
- 
-    {{$exception}}
-<br>
-@component('mail::button', ['url' => config('app.url'))])
-Click Here
-@endcomponent
+There is a <b>{{ $exception['name'] }}</b> on Laravel Server.<br><br>
+<b>Type</b>: {{ $exception['type'] }}<br><br>
+<b>Error</b>: {{ $exception['message'] }}<br><br>
 
-If you did not request a signup , no further action is required.
+<b>File</b>: {{ $exception['file'].":".$exception['line'] }}<br><br>
 
-Thanks,
-{{ config('app.name') }}
-@endcomp
+<b>Time</b> {{ date("Y-m-d H:i:s") }}<br><br>
+
+Please do the needful.

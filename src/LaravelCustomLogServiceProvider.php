@@ -2,10 +2,11 @@
 
 namespace Computan\LaravelCustomLog;
 
-use Illuminate\Contracts\Debug\ExceptionHandler;
+use Computan\Jobs\SendEmailsJob;
 use Illuminate\Support\Facades\Queue;
 use Illuminate\Queue\Events\JobFailed;
 use Illuminate\Support\ServiceProvider;
+use Illuminate\Contracts\Debug\ExceptionHandler;
 
 class LaravelCustomLogServiceProvider extends ServiceProvider
 {
@@ -28,6 +29,14 @@ class LaravelCustomLogServiceProvider extends ServiceProvider
         /* getting fialed job exception */
         Queue::failing(function (JobFailed $event) {
             Notifications::error('laravel', 'job', collect($event->exception)->toArray());
+            $exception = [
+                "name" => get_class($event->exception),
+                "message" => $event->exception->getMessage(),
+                "file" => $event->exception->getFile(),
+                "line" => $event->exception->getLine(),
+                "type"=>"job",
+            ];
+            dispatch(new SendEmailsJob($exception))->delay(5);
         });
 
         if ($this->app->runningInConsole()) {
