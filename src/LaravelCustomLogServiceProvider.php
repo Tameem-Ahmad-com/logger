@@ -2,7 +2,7 @@
 
 namespace Computan\LaravelCustomLog;
 
-
+use Computan\Console\SendErrorEmailCommand;
 use Illuminate\Support\Facades\Queue;
 use Illuminate\Queue\Events\JobFailed;
 use Illuminate\Support\ServiceProvider;
@@ -22,6 +22,13 @@ class LaravelCustomLogServiceProvider extends ServiceProvider
 
     public function boot()
     {
+        $this->commands([
+            SendErrorEmailCommand::class,
+           
+        ]);
+  
+        
+
         /* Binding package exception into laravel ExceptionHandler interface*/
         $this->app->bind(
             ExceptionHandler::class,
