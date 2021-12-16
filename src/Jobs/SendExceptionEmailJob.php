@@ -45,7 +45,7 @@ class SendExceptionEmailJob implements ShouldQueue
             foreach ($errors as $error) {
                 $html = '<h1>Error occured on ' . config('app.url') . '</h1><br><br>
                 <h4>Here is error details</h4><br>
-        
+                '.$error->message=="job"?"Job failed please see error details":$error->message.'
                 <p style="background: rgba(0,0,0,0.5);color:white">' . print_r($error->context, TRUE) . '</p><br>
                   please contact with development team.';
 
