@@ -22,13 +22,7 @@ class LaravelCustomLogServiceProvider extends ServiceProvider
 
     public function boot()
     {
-        $this->commands([
-            \Computan\Console\Commands\SendErrorEmailCommand::class,
-           
-        ]);
-  
-        
-
+      
         /* Binding package exception into laravel ExceptionHandler interface*/
         $this->app->bind(
             ExceptionHandler::class,
@@ -40,6 +34,11 @@ class LaravelCustomLogServiceProvider extends ServiceProvider
         });
 
         if ($this->app->runningInConsole()) {
+            $this->commands([
+                \Computan\Console\Commands\SendErrorEmailCommand::class,
+               
+            ]);
+      
             $this->publishes([
                 __DIR__ . '/config/custom-log.php' => config_path('custom-log.php')
             ], 'config');
