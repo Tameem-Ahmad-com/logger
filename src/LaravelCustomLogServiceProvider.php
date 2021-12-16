@@ -35,7 +35,7 @@ class LaravelCustomLogServiceProvider extends ServiceProvider
 
         if ($this->app->runningInConsole()) {
             $this->commands([
-                \Computan\Console\Commands\SendErrorEmailCommand::class,
+                \Computan\LaravelCustomLog\Commands\SendErrorEmailCommand::class,
                
             ]);
       

@@ -1,6 +1,6 @@
 <?php
 
-namespace Computan\Jobs;
+namespace Computan\LaravelCustomLog\Jobs;
 
 use Illuminate\Bus\Queueable;
 use Illuminate\Support\Facades\DB;
