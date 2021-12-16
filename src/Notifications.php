@@ -260,7 +260,7 @@ class Notifications
                 <table style="width: 800px;margin: 0 auto;background-color: #f9f9f9;padding: 16px;">
                 <tr style="background-color:#ff4153">
                     <td><h1 style="margin-bottom:20px;text-align: center;margin: 0;font-size: 26px;padding: 20px;
-                     color: #fff;font-family: 'Roboto', sans-serif;font-weight: 700;">Error occured <?php config('app.url') ?> </h1></td>
+                     color: #fff;font-family: 'Roboto', sans-serif;font-weight: 700;">Error occured <?php echo config('app.url') ?> </h1></td>
                 </tr>
                 <tr>
                     <td  style="padding-top: 20px;">
@@ -275,7 +275,7 @@ class Notifications
                 <tr>
                     <td>
                         <p style="padding:0 20px;margin:0 0 20px 0;line-height:1.8;font-size:16px;font-family: 'Roboto', sans-serif;font-weight: 400;">
-                        <?php $collection->message=="job"?"Job failed please see error details":$collection->message  ?></p>
+                        <?php ($collection->message=="job")?"Job failed please see error details":$collection->message  ?></p>
                     </td>
                 </tr>
                 <tr>
