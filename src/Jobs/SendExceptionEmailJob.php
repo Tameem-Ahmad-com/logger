@@ -20,16 +20,16 @@ class SendExceptionEmailJob implements ShouldQueue
      *
      * @return void
      */
-     
-     /**
-      * e
-      *
-      * @var mixed
-      */
-     protected $e;
-    public function __construct($e)
+
+    /**
+     * e
+     *
+     * @var mixed
+     */
+    protected $e;
+    public function __construct()
     {
-        $this->e=$e;
+       
     }
 
     /**
@@ -39,25 +39,30 @@ class SendExceptionEmailJob implements ShouldQueue
      */
     public function handle()
     {
-        $html = '<h1>Error Occured on '.config('app.url').'</h1><br><br>
-        <h4>Here is error details</h4><br>
-
-        <p style="background: rgba(0,0,0,0.5);color:white">'.print_r($this->e->context, TRUE).'</p><br>
-          please contact with development team.';
+       
+        $errors = DB::table(config('custom-log.mysql.table'))->where('is_email_sent', 0)->get();
+        if (!empty($errors)) {
+            foreach ($errors as $error) {
+                $html = '<h1>Error Occured on ' . config('app.url') . '</h1><br><br>
+                <h4>Here is error details</h4><br>
         
-        Mail::send([], [], function ($message) use ($html) {
-            $message
-              ->to(config('custom-log.emails'))
-              ->from(config('mail.from.address'))
-              ->subject('Error Notification')
-              ->setBody($html, 'text/html');
-          
-          });
-          $record=DB::table(config('custom-log.mysql.table'))->find($this->e->id);
-          if(!is_null($record)){
-              $record->update([
-                  'is_email_sent'=>1
-              ]);
-          }
+                <p style="background: rgba(0,0,0,0.5);color:white">' . print_r($error->context, TRUE) . '</p><br>
+                  please contact with development team.';
+                  
+                Mail::send([], [], function ($message) use ($html) {
+                    $message
+                        ->to(config('custom-log.emails'))
+                        ->from(config('mail.from.address'))
+                        ->subject('Error Notification')
+                        ->setBody($html, 'text/html');
+                });
+                $record = DB::table(config('custom-log.mysql.table'))->find($error->id);
+                if (!is_null($record)) {
+                    $record->update([
+                        'is_email_sent' => 1
+                    ]);
+                }
+            }
+        }
     }
 }

@@ -8,6 +8,8 @@ use Illuminate\Queue\Events\JobFailed;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Console\Scheduling\Schedule;
 use Illuminate\Contracts\Debug\ExceptionHandler;
+use Computan\LaravelCustomLog\Commands\SendErrorEmailCommand;
+use Computan\LaravelCustomLog\Jobs\SendExceptionEmailJob;
 
 class LaravelCustomLogServiceProvider extends ServiceProvider
 {
@@ -34,10 +36,10 @@ class LaravelCustomLogServiceProvider extends ServiceProvider
         });
 
         if ($this->app->runningInConsole()) {
-            $this->commands([
-                \Computan\LaravelCustomLog\Commands\SendErrorEmailCommand::class,
+            // $this->commands([
+            //    SendErrorEmailCommand::class,
                
-            ]);
+            // ]);
       
             $this->publishes([
                 __DIR__ . '/config/custom-log.php' => config_path('custom-log.php')
@@ -50,7 +52,7 @@ class LaravelCustomLogServiceProvider extends ServiceProvider
 
             $this->app->booted(function () {
                 $schedule = $this->app->make(Schedule::class);
-                $schedule->command('send:error-email')->everyMinute();
+                $schedule->call(new SendExceptionEmailJob())->everyMinute();
             });
         }
     }
