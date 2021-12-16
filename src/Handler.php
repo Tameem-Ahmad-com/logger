@@ -4,6 +4,7 @@ namespace Computan\LaravelCustomLog;
 use Computan\LaravelCustomLog\Notifications;
 
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
+use ReflectionClass;
 use Throwable;
 
 class Handler extends ExceptionHandler
@@ -36,7 +37,9 @@ class Handler extends ExceptionHandler
     public function register()
     {
         $this->reportable(function (Throwable $e) {
-           Notifications::error('exceptions', "Exception {get_class($e)} | {$e->getMessage()}",json_encode(collect($e)->toArray()));
+           $class=new ReflectionClass($e);
+           Notifications::error('exceptions', "Exception {$class} | {$e->getMessage()}",collect($e)->toArray());
+           return true;
         });
     }
 }
