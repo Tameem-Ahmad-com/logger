@@ -1,8 +1,8 @@
 <?php
 
-namespace Computan\Console\Commands;
+namespace Computan\LaravelCustomLog\Commands;
 
-use Computan\Jobs\SendExceptionEmailJob;
+use Computan\LaravelCustomLog\Jobs\SendExceptionEmailJob;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\DB;
 

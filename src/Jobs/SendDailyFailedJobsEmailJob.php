@@ -2,6 +2,7 @@
 
 namespace Computan\LaravelCustomLog\Jobs;
 
+use Computan\LaravelCustomLog\Notifications;
 use Illuminate\Bus\Queueable;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Mail;
@@ -9,10 +10,9 @@ use Illuminate\Queue\SerializesModels;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
-use Computan\LaravelCustomLog\Notifications;
 use Illuminate\Contracts\Queue\ShouldBeUnique;
 
-class SendExceptionEmailJob implements ShouldQueue
+class SendDailyFailedJobsEmailJob implements ShouldQueue
 {
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
 
@@ -41,10 +41,10 @@ class SendExceptionEmailJob implements ShouldQueue
     public function handle()
     {
        
-        $errors = DB::table(config('custom-log.mysql.table'))->where('is_email_sent', 0)->get();
-        if (!empty($errors)) {
-            foreach ($errors as $error) {
-                Mail::send([], [], function ($message) use($error) {
+       
+        if (Notifications::getJobDailyCount()>0) {
+            foreach (Notifications::getJobDailyLogs() as $error) {
+               Mail::send([], [], function ($message) use($error) {
                     $message
                         ->to(config('custom-log.emails'))
                         ->from(config('mail.from.address'))

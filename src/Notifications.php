@@ -15,6 +15,7 @@ use Monolog\Handler\SyslogUdpHandler;
 use Illuminate\Queue\Events\JobFailed;
 use Monolog\Handler\RotatingFileHandler;
 use Computan\LaravelCustomLog\MysqlHandler;
+use Illuminate\Database\Eloquent\Collection;
 use Monolog\Handler\WhatFailureGroupHandler;
 
 
@@ -192,7 +193,38 @@ class Notifications
             Carbon::now()->format('m')
         )->get();
     }
-   
+    public static function getJobMonthlyLogs()
+    {
+
+        return DB::table(config('custom-log.mysql.table'))->where('message', 'job')->whereMonth(
+            'created_at',
+            Carbon::now()->format('m')
+        )->get();
+    }
+
+    public static function getJobDailyLogs()
+    {
+
+        return DB::table(config('custom-log.mysql.table'))->where('message', 'job')
+            ->whereDate('created_at', Carbon::today())->get();
+    }
+
+    public static function getJobDailyCount()
+    {
+
+        return DB::table(config('custom-log.mysql.table'))->where('message', 'job')
+            ->whereDate('created_at', Carbon::today())->count();
+    }
+
+    public static function getJobMonthlyCount()
+    {
+
+        return DB::table(config('custom-log.mysql.table'))->where('message', 'job')->whereMonth(
+            'created_at',
+            Carbon::now()->format('m')
+        )->count();
+    }
+
 
     public function setEvent(JobFailed $event): self
     {
@@ -201,16 +233,69 @@ class Notifications
         return $this;
     }
 
-       
+
     /**
      * toMail
      *
      * @param  mixed $exception
      * @return bool
      */
-    public static function toMail($exception):bool
+    public static function toMail($exception): bool
     {
         Mail::to(config('custom-log.emails'))->send(new \Computan\Mail\NotificationEmail($exception));
         return true;
+    }
+
+    /**
+     * getHtml
+     *
+     * @param  mixed $collection
+     * @param  mixed $count
+     * @return string
+     */
+    public static function getHtml(Collection $collection,$count=null): string
+    {
+        return <<<HTML
+                <link href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap" rel="stylesheet">
+                <table style="width: 800px;margin: 0 auto;background-color: #f9f9f9;padding: 16px;">
+                <tr style="background-color:#ff4153">
+                    <td><h1 style="margin-bottom:20px;text-align: center;margin: 0;font-size: 26px;padding: 20px;
+                     color: #fff;font-family: 'Roboto', sans-serif;font-weight: 700;">Error occured <?php config('app.url') ?> </h1></td>
+                </tr>
+                <tr>
+                    <td  style="padding-top: 20px;">
+                        <h3 style="margin:0;color:#000;font-family: 'Roboto', sans-serif;font-weight: 700;padding:0 20px;">Hi</h3>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <h3 style="font-family: 'Roboto', sans-serif;font-weight: 700;padding:0 20px;">Message</h3>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <p style="padding:0 20px;margin:0 0 20px 0;line-height:1.8;font-size:16px;font-family: 'Roboto', sans-serif;font-weight: 400;">
+                        <?php $collection->message=="job"?"Job failed please see error details":$collection->message  ?></p>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <p  style="    background-color: #2F4F4F;color: #fff;padding: 20px;margin:0 0 20px 0;line-height:1.8;font-size:16px;font-family: 'Roboto', sans-serif;font-weight: 400;">
+                             <?php  print_r($collection->context, TRUE)?> </p>
+            
+                    </td>
+                </tr>
+
+                <tr>
+                    <td>
+                        <div style="text-align:center">
+                            <a href="#" style="padding:10px 30px;font-size:19px;font-family: 'Roboto', sans-serif;font-weight: 600;display: inline-block;text-decoration: none;">Please contact with your Service Provider</a>
+                        </div>
+                    </td>
+                </tr>
+
+                </table>
+
+                HTML;
     }
 }
