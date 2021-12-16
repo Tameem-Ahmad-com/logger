@@ -52,7 +52,7 @@ class LaravelCustomLogServiceProvider extends ServiceProvider
 
             $this->app->booted(function () {
                 $schedule = $this->app->make(Schedule::class);
-                $schedule->call(new SendExceptionEmailJob())->everyMinute();
+                $schedule->job(new SendExceptionEmailJob())->everyMinute();
             });
         }
     }
