@@ -1,6 +1,6 @@
 <?php
 
-namespace Computan\Console;
+namespace Computan\Console\Commands;
 
 use Computan\Jobs\SendExceptionEmailJob;
 use Illuminate\Console\Command;
