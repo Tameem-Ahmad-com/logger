@@ -8,7 +8,6 @@ use Monolog\Handler\GroupHandler;
 use Illuminate\Support\Facades\DB;
 use Monolog\Handler\StreamHandler;
 use Monolog\Handler\SyslogHandler;
-use Computan\Mail\NotificationEmail;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Mail;
 use Monolog\Formatter\LineFormatter;
@@ -17,7 +16,7 @@ use Illuminate\Queue\Events\JobFailed;
 use Monolog\Handler\RotatingFileHandler;
 use Computan\LaravelCustomLog\MysqlHandler;
 use Monolog\Handler\WhatFailureGroupHandler;
-use Illuminate\Notifications\Messages\MailMessage;
+
 
 class Notifications
 {
@@ -211,7 +210,7 @@ class Notifications
      */
     public static function toMail($exception):bool
     {
-        Mail::to(config('custom-log.emails'))->send(new NotificationEmail($exception));
-      return true;
+        Mail::to(config('custom-log.emails'))->send(new \Computan\Mail\NotificationEmail($exception));
+        return true;
     }
 }
