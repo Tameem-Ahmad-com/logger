@@ -8,7 +8,9 @@ use Monolog\Handler\GroupHandler;
 use Illuminate\Support\Facades\DB;
 use Monolog\Handler\StreamHandler;
 use Monolog\Handler\SyslogHandler;
+use Computan\Mail\NotificationEmail;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Mail;
 use Monolog\Formatter\LineFormatter;
 use Monolog\Handler\SyslogUdpHandler;
 use Illuminate\Queue\Events\JobFailed;
@@ -200,20 +202,16 @@ class Notifications
         return $this;
     }
 
-     /**
+       
+    /**
      * toMail
      *
-     * @param  mixed $notifiable
-     * @return MailMessage
+     * @param  mixed $exception
+     * @return bool
      */
-    public function toMail($notifiable): MailMessage
+    public static function toMail($exception):bool
     {
-        return (new MailMessage)
-            ->error()
-            ->subject('A job failed at '.config('app.url'))
-            ->line("Exception message: {$this->event->exception->getMessage()}")
-            ->line("Job class: {$this->event->job->resolveName()}")
-            ->line("Job body: {$this->event->job->getRawBody()}")
-            ->line("Exception: {$this->event->exception->getTraceAsString()}");
+        Mail::to(config('custom-log.emails'))->send(new NotificationEmail($exception));
+      return true;
     }
 }

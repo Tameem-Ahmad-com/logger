@@ -30,13 +30,17 @@ class LaravelCustomLogServiceProvider extends ServiceProvider
             Notifications::error('laravel', 'job', collect($event->exception)->toArray());
         });
 
-        $this->publishes([
-            __DIR__ . '/config/custom-log.php' => config_path('custom-log.php')
-        ], 'config');
+        if ($this->app->runningInConsole()) {
+            $this->publishes([
+                __DIR__ . '/config/custom-log.php' => config_path('custom-log.php')
+            ], 'config');
 
-        $this->publishes([
+            $this->publishes([
 
-            __DIR__ . '/migrations/2021_12_13_000000_create_logs_table.php' => base_path('database/migrations/2021_12_13_000000s_create_logs_table.php')
-        ], 'migration');
+                __DIR__ . '/migrations/2021_12_13_000000_create_logs_table.php' => base_path('database/migrations/2021_12_13_000000s_create_logs_table.php')
+            ], 'migration');
+
+            $this->loadViewsFrom(__DIR__ . '/./resources/views', 'exceptions');
+        }
     }
 }
