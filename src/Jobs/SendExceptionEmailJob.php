@@ -43,7 +43,7 @@ class SendExceptionEmailJob implements ShouldQueue
         $errors = DB::table(config('custom-log.mysql.table'))->where('is_email_sent', 0)->get();
         if (!empty($errors)) {
             foreach ($errors as $error) {
-                $html = '<h1>Error Occured on ' . config('app.url') . '</h1><br><br>
+                $html = '<h1>Error occured on ' . config('app.url') . '</h1><br><br>
                 <h4>Here is error details</h4><br>
         
                 <p style="background: rgba(0,0,0,0.5);color:white">' . print_r($error->context, TRUE) . '</p><br>
@@ -58,7 +58,7 @@ class SendExceptionEmailJob implements ShouldQueue
                 });
                 $record = DB::table(config('custom-log.mysql.table'))->find($error->id);
                 if (!is_null($record)) {
-                    DB::table(config('custom-log.mysql.table'))->whereKey($error->id)->update([
+                    DB::table(config('custom-log.mysql.table'))->where('id',$error->id)->update([
                         'is_email_sent' => 1
                     ]);
                 }
