@@ -44,13 +44,7 @@ class SendExceptionEmailJob implements ShouldQueue
         $errors = DB::table(config('custom-log.mysql.table'))->where('is_email_sent', 0)->get();
         if (!empty($errors)) {
             foreach ($errors as $error) {
-                Mail::send([], [], function ($message) use($error) {
-                    $message
-                        ->to(config('custom-log.emails'))
-                        ->from(config('mail.from.address'))
-                        ->subject('Error Notification')
-                        ->setBody(Notifications::getHtml($error), 'text/html');
-                });
+              
                 $record = DB::table(config('custom-log.mysql.table'))->find($error->id);
                 if (!is_null($record)) {
                     DB::table(config('custom-log.mysql.table'))->where('id',$error->id)->update([

@@ -4,6 +4,7 @@ namespace Notify\LaravelCustomLog;
 
 
 use Illuminate\Support\Facades\Queue;
+use Illuminate\Support\Facades\Route;
 use Illuminate\Queue\Events\JobFailed;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Console\Scheduling\Schedule;
@@ -34,7 +35,7 @@ class LaravelCustomLogServiceProvider extends ServiceProvider
             );
             /* getting fialed job exception */
             Queue::failing(function (JobFailed $event) {
-                Notifications::error('laravel', 'job', collect($event->exception)->toArray());
+                Notifications::error('job', $event->exception->getMessage(), collect($event->exception)->toArray());
             });
 
             if ($this->app->runningInConsole()) {
@@ -47,14 +48,31 @@ class LaravelCustomLogServiceProvider extends ServiceProvider
                     __DIR__ . '/migrations/2021_12_13_000000_create_logs_table.php' => base_path('database/migrations/2021_12_13_000000s_create_logs_table.php')
                 ], 'migration');
 
+                $this->loadRoutesFrom(__DIR__ . '/routes/web.php');
+                $this->loadViewsFrom(__DIR__.'/resources/views', 'custom-log');
+
 
                 /* commands section */
                 $this->app->booted(function () {
                     $schedule = $this->app->make(Schedule::class);
-                    $schedule->job(new SendExceptionEmailJob())->everyMinute();
-                    // $schedule->job(new SendDailyFailedJobsEmailJob)->daily();
+                    $schedule->job(new SendExceptionEmailJob());
                 });
             }
         }
+    }
+
+    protected function registerRoutes()
+    {
+        Route::group($this->routeConfiguration(), function () {
+            $this->loadRoutesFrom(__DIR__ . 'routes/web.php');
+        });
+    }
+
+    protected function routeConfiguration()
+    {
+        return [
+            'prefix' => config('custom-log.prefix'),
+            'middleware' => config('custom-log.middleware'),
+        ];
     }
 }

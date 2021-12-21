@@ -1,6 +1,8 @@
 <?php
 
 return [
+    'prefix' => 'notify',
+    'middleware' => ['web'],
     'failsafe' => env('CUSTOM_LOG_FAILSAFE', true),
     'custom_log_mysql_enable'=>env('CUSTOM_LOG_MYSQL_ENABLE',true),
     'stacktrace' => env('CUSTOM_LOG_STACKTRACE', false),
