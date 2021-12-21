@@ -201,7 +201,7 @@ class Notifications
     public static function getJobMonthlyLogs()
     {
 
-        return DB::table(config('custom-log.mysql.table'))->where('message', 'job')->whereMonth(
+        return DB::table(config('custom-log.mysql.table'))->where('channel', 'job')->whereMonth(
             'created_at',
             Carbon::now()->format('m')
         )->get();
@@ -215,7 +215,7 @@ class Notifications
     public static function getJobDailyLogs()
     {
 
-        return DB::table(config('custom-log.mysql.table'))->where('message', 'job')
+        return DB::table(config('custom-log.mysql.table'))->where('channel', 'job')
             ->whereDate('created_at', Carbon::today())->get();
     }
 

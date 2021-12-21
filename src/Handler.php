@@ -37,8 +37,7 @@ class Handler extends ExceptionHandler
     public function register()
     {
         $this->reportable(function (Throwable $e) {
-            $class = new ReflectionClass($e);
-            Notifications::error('exceptions', "Exception {$class} | {$e->getMessage()}", collect($e)->toArray());
+            Notifications::error('exceptions', "{$e->getMessage()}", collect($e)->toArray());
          });
     }
 }

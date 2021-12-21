@@ -48,16 +48,14 @@ class LaravelCustomLogServiceProvider extends ServiceProvider
                     __DIR__ . '/migrations/2021_12_13_000000_create_logs_table.php' => base_path('database/migrations/2021_12_13_000000s_create_logs_table.php')
                 ], 'migration');
 
-                $this->loadRoutesFrom(__DIR__ . '/routes/web.php');
-                $this->loadViewsFrom(__DIR__.'/resources/views', 'custom-log');
-
-
                 /* commands section */
                 $this->app->booted(function () {
                     $schedule = $this->app->make(Schedule::class);
                     $schedule->job(new SendReportEmailJob());
                 });
             }
+            $this->loadRoutesFrom(__DIR__ . '/routes/web.php');
+            $this->loadViewsFrom(__DIR__.'/resources/views', 'custom-log');
         }
     }
 
