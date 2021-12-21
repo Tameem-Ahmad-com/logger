@@ -284,26 +284,36 @@ class Notifications
     {
         $totalErrors=self::getDailyCount();
         $jobsFailed=self::getJobDailyCount();
+        $appName=config('app.name');
+        $url=url('notify/exceptions');
         return <<<HTML
                     <link href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap" rel="stylesheet">
                     <table style="width: 800px;margin: 0 auto;background-color: #f9f9f9;padding: 16px;">
-                    <tr style="background-color:#ff4153">
-                        <td><h1 style="margin-bottom:20px;text-align: center;margin: 0;font-size: 26px;padding: 20px;
-                        color: #fff;font-family: 'Roboto', sans-serif;font-weight: 700;">Error report for <?php print_r(config('app.name')) ?> </h1></td>
+                    <tr style="background-color:#f9f9f9">
+                        <td>
+                            <h1>Error report for {$appName} </h1></td>
                     </tr>
+                    
                     <tr>
-                        <td  style="padding-top: 20px;">
-                            <h3 style="margin:0;color:#000;font-family: 'Roboto', sans-serif;font-weight: 700;padding:0 20px;">Hi</h3>
+                        <td >
+                            <h3>Hi</h3>
                         </td>
                     </tr>
                     <tr>
                         <td>
-                            <h3 style="font-family: 'Roboto', sans-serif;font-weight: 700;padding:0 20px;">Total Exceptions : {$totalErrors} </h3>
+                            <h6>Total Exceptions : {$totalErrors} </h6>
                         </td>
                     </tr>
                     <tr>
                     <td>
-                        <h3 style="font-family: 'Roboto', sans-serif;font-weight: 700;padding:0 20px;">Total Jobs Failed : {$jobsFailed} </h3>
+                        <h6>Total Jobs Failed : {$jobsFailed} </h6>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <div style="text-align:center">
+                            <a href="{$url}" style="padding:10px 30px;font-size:19px;font-family: 'Roboto', sans-serif;font-weight: 600;display: inline-block;text-decoration: none;">Please contact with your Service Provider</a>
+                        </div>
                     </td>
                 </tr>
                 </table>
