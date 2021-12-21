@@ -61,18 +61,4 @@ class LaravelCustomLogServiceProvider extends ServiceProvider
         }
     }
 
-    protected function registerRoutes()
-    {
-        Route::group($this->routeConfiguration(), function () {
-            $this->loadRoutesFrom(__DIR__ . 'routes/web.php');
-        });
-    }
-
-    protected function routeConfiguration()
-    {
-        return [
-            'prefix' => config('custom-log.prefix'),
-            'middleware' => config('custom-log.middleware'),
-        ];
-    }
 }
