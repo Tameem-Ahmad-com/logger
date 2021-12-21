@@ -9,8 +9,8 @@ use Illuminate\Queue\Events\JobFailed;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Console\Scheduling\Schedule;
 use Illuminate\Contracts\Debug\ExceptionHandler;
-use Notify\LaravelCustomLog\Jobs\SendExceptionEmailJob;
-use Notify\LaravelCustomLog\Jobs\SendDailyFailedJobsEmailJob;
+use Notify\LaravelCustomLog\Jobs\SendReportEmailJob;
+
 
 class LaravelCustomLogServiceProvider extends ServiceProvider
 {
@@ -55,7 +55,7 @@ class LaravelCustomLogServiceProvider extends ServiceProvider
                 /* commands section */
                 $this->app->booted(function () {
                     $schedule = $this->app->make(Schedule::class);
-                    $schedule->job(new SendExceptionEmailJob());
+                    $schedule->job(new SendReportEmailJob());
                 });
             }
         }

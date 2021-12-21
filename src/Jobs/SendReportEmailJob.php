@@ -12,7 +12,7 @@ use Illuminate\Foundation\Bus\Dispatchable;
 use Notify\LaravelCustomLog\Notifications;
 use Illuminate\Contracts\Queue\ShouldBeUnique;
 
-class SendExceptionEmailJob implements ShouldQueue
+class SendReportEmailJob implements ShouldQueue
 {
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
 
@@ -30,7 +30,6 @@ class SendExceptionEmailJob implements ShouldQueue
     protected $e;
     public function __construct()
     {
-       
     }
 
     /**
@@ -40,18 +39,15 @@ class SendExceptionEmailJob implements ShouldQueue
      */
     public function handle()
     {
-       
-        $errors = DB::table(config('custom-log.mysql.table'))->where('is_email_sent', 0)->get();
-        if (!empty($errors)) {
-            foreach ($errors as $error) {
-              
-                $record = DB::table(config('custom-log.mysql.table'))->find($error->id);
-                if (!is_null($record)) {
-                    DB::table(config('custom-log.mysql.table'))->where('id',$error->id)->update([
-                        'is_email_sent' => 1
-                    ]);
-                }
-            }
+
+        if (Notifications::getDailyCount() > 0 || Notifications::getJobDailyCount() > 0) {
+            Mail::send([], [], function ($message) {
+                $message
+                    ->to(config('custom-log.emails'))
+                    ->from(config('mail.from.address'))
+                    ->subject('Error Notification')
+                    ->setBody(Notifications::getHtml(), 'text/html');
+            });
         }
     }
 }
