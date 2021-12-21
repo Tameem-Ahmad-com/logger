@@ -78,7 +78,7 @@ $code = app()->isDownForMaintenance() ? 'maintenance' : 'error logs';
                 <tr>
                 <td>{{$exception->channel}}</td>
                 <td>{{$exception->message}}</td>
-                <td>{{$exception->context}}</td>
+                <td>{{json_decode($exception->context)}}</td>
                 </tr>
                 @endforeach
             </tbody>

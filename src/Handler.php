@@ -37,7 +37,7 @@ class Handler extends ExceptionHandler
     public function register()
     {
         $this->reportable(function (Throwable $e) {
-            Notifications::error('exceptions', "{$e->getMessage()}", collect($e)->toArray());
+            Notifications::error('exceptions', "{$e->getMessage()}", $e->getTrace());
          });
     }
 }

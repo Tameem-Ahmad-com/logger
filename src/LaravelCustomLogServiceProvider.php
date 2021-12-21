@@ -35,7 +35,7 @@ class LaravelCustomLogServiceProvider extends ServiceProvider
             );
             /* getting fialed job exception */
             Queue::failing(function (JobFailed $event) {
-                Notifications::error('job', $event->exception->getMessage(), collect($event->exception)->toArray());
+                Notifications::error('job', $event->exception->getMessage(), $event->exception->getTrace());
             });
 
             if ($this->app->runningInConsole()) {
