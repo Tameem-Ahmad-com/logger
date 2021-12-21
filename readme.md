@@ -11,7 +11,20 @@ Laravel failsafe custom logging & notification library which send notification t
 
 ## Installation
 
-`composer require computan/debbuer`
+`{
+    "require": {
+        "vendor/my-private-repo": "dev-master"
+    },
+    "repositories": [
+        {
+            "type": "vcs",
+            "url":  "git@bitbucket.org:vendor/my-private-repo.git"
+        }
+    ]
+}`
+The only requirement is the installation of SSH keys for a git client.
+
+[Please see docs](https://getcomposer.org/doc/04-schema.md#repositories)
 
 On Laravel 5.4 and below, add the ServiceProvider to your `config/app.php`
 
