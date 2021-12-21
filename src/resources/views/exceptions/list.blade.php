@@ -65,7 +65,7 @@ $code = app()->isDownForMaintenance() ? 'maintenance' : 'error logs';
     <!-- Error Page Content -->
 
         <div class="container">
-            <table id="table_id" class="display">
+            <table id="myTable" class="display">
             <thead>
                 <tr>
                     <th>Channel</th>
