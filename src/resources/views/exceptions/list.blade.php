@@ -1,5 +1,5 @@
 <?php
-$code = app()->isDownForMaintenance() ? 'maintenance' : $exception->getStatusCode();
+$code = app()->isDownForMaintenance() ? 'maintenance' : 'error logs';
 ?>
 <!DOCTYPE html>
 <html lang="{!! app()->getLocale() }}">
