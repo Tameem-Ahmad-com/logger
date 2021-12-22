@@ -18,6 +18,8 @@ $code = app()->isDownForMaintenance() ? 'maintenance' : 'error logs';
 
 <body>
     <div class="container">
+        {{$exceptions->withQueryString()->links('pagination::bootstrap-4')}}
+    
         @foreach ($exceptions as $exception)
             <div id="accordion-{{$exception->id}}">
                 <div class="card">
@@ -32,13 +34,14 @@ $code = app()->isDownForMaintenance() ? 'maintenance' : 'error logs';
 
                     <div id="collapse-{{$exception->id}}" class="collapse show" aria-labelledby="headingOne" data-parent="#accordion-{{$exception->id}}">
                         <div class="card-body">
-                            {{$exception->context}}
+                            <?php dump($exception->context) ?>
                         </div>
                     </div>
                 </div>
 
             </div>
         @endforeach
+        {{$exceptions->withQueryString()->links('pagination::bootstrap-4')}}
     </div>
 
     <!-- End Error Page Content -->
