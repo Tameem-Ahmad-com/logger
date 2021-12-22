@@ -10,58 +10,35 @@ $code = app()->isDownForMaintenance() ? 'maintenance' : 'error logs';
     <title>{{ $code }}</title>
     <link rel="stylesheet" href="//cdn.datatables.net/1.11.3/css/jquery.dataTables.min.css">
     <!-- Latest compiled and minified CSS -->
-<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
-    <style>
-        body {
-            margin: 2em;
-        }
-
-        h2 {
-            margin: 1em 0;
-        }
-
-        /*
-.collapse-accordion a[data-toggle=collapse] {display: block;padding:.75rem 1.25rem;}
-*/
-        .collapse-accordion .card a[data-toggle=collapse] {
-            display: block;
-            padding: .75rem 1.25rem;
-        }
-
-        .collapse-accordion .card-header {
-            padding: 0;
-        }
-
-    </style>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"
+        integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+    
 
 </head>
 
 <body>
     <div class="container">
-        <div class="collapse-accordion" id="accordion2" role="tablist" aria-multiselectable="true">
-            @foreach($exceptions as $exception)
-            <div class="card">
-                <div class="card-header" role="tab" id="headingOne1">
-                    <h5 class="mb-0">
-                        <a data-toggle="collapse" data-parent="#accordion2" href="#collapseOne2" aria-expanded="true"
-                            aria-controls="collapseOne">
-                            {{$exception->message}}
-                            <span class="float-right">See details</span>
+        @foreach ($exceptions as $exception)
+            <div id="accordion-{{$exception->id}}">
+                <div class="card">
+                    <div class="card-header" id="headingOne">
+                        <h5 class="mb-0">
+                            <button class="btn btn-link" data-toggle="collapse" data-target="#collapseOne"
+                                aria-expanded="true" aria-controls="collapse-{{$exception->id}}">
+                                {{$exception->message}} - {{$exception->created_at}}
+                            </button>
+                        </h5>
+                    </div>
 
-                        </a>
-                    </h5>
-                </div>
-
-                <div id="collapseOne2" class="collapse show" role="tabpanel" aria-labelledby="headingOne2">
-                    <div class="card-block">
-                        {{$exception->context}}
+                    <div id="collapse-{{$exception->id}}" class="collapse show" aria-labelledby="headingOne" data-parent="#accordion-{{$exception->id}}">
+                        <div class="card-body">
+                            {{$exception->context}}
+                        </div>
                     </div>
                 </div>
+
             </div>
-            @endforeach
-            {{ $exceptions->links() }}
-           
-        </div>
+        @endforeach
     </div>
 
     <!-- End Error Page Content -->
@@ -69,7 +46,9 @@ $code = app()->isDownForMaintenance() ? 'maintenance' : 'error logs';
     <!-- jQuery library -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
     <!-- Latest compiled and minified JavaScript -->
-<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"
+        integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous">
+    </script>
     <script src="//cdn.datatables.net/1.11.3/js/jquery.dataTables.min.js"></script>
     <script>
         $(document).ready(function() {
