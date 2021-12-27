@@ -40,7 +40,7 @@ class SendReportEmailJob implements ShouldQueue
     public function handle()
     {
 
-        if (Notifications::getDailyCount() > 0 || Notifications::getJobDailyCount() > 0) {
+        if (Notifications::getDailyCount() > 0) {
             Mail::send([], [], function ($message) {
                 $message
                     ->to(config('custom-log.emails'))

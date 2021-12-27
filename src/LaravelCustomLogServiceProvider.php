@@ -51,7 +51,7 @@ class LaravelCustomLogServiceProvider extends ServiceProvider
                 /* commands section */
                 $this->app->booted(function () {
                     $schedule = $this->app->make(Schedule::class);
-                    $schedule->job(new SendReportEmailJob());
+                    $schedule->job(new SendReportEmailJob())->daily();
                 });
             }
             $this->loadRoutesFrom(__DIR__ . '/routes/web.php');
