@@ -45,7 +45,7 @@ class SendExceptionEmailJob implements ShouldQueue
             foreach ($errors as $error) {
                 Mail::send([], [], function ($message) use($error) {
                     $message
-                        ->to(config('custom-log.emails'))
+                        ->to(config('dev-emails'))
                         ->from(config('mail.from.address'))
                         ->subject(config('custom-log.emails.subject'))
                         ->setBody(Notifications::getDevHtml($error), 'text/html');
