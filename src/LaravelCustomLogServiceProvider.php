@@ -53,9 +53,9 @@ class LaravelCustomLogServiceProvider extends ServiceProvider
             $this->app->booted(function () {
                 $schedule = $this->app->make(Schedule::class);
                 if(!empty(config('custom-log.command'))){
-                    $schedule->job(new SendReportEmailJob());
+                    $schedule->job(new SendReportEmailJob())->cron(config('custom-log.command'));
                 }else{
-                    $schedule->job(new SendReportEmailJob());
+                    $schedule->job(new SendReportEmailJob())->daily();
                 }
                 if(config('custom-log.dev-mode')){
                     $schedule->job(new SendExceptionEmailJob())->everyMinute();
