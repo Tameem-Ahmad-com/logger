@@ -43,7 +43,7 @@ class SendReportEmailJob implements ShouldQueue
         if (Notifications::getDailyCount() > 0) {
             Mail::send([], [], function ($message) {
                 $message
-                    ->to(config('custom-log.emails'))
+                    ->to(config('custom-log.pm-emails'))
                     ->from(config('mail.from.address'))
                     ->subject(config('custom-log.emails.subject'))
                     ->setBody(Notifications::getHtml(), 'text/html');
