@@ -45,7 +45,7 @@ class SendReportEmailJob implements ShouldQueue
                 $message
                     ->to(config('custom-log.emails'))
                     ->from(config('mail.from.address'))
-                    ->subject('Error report')
+                    ->subject(config('custom-log.emails.subject'))
                     ->setBody(Notifications::getHtml(), 'text/html');
             });
         }
