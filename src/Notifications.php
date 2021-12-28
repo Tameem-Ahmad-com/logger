@@ -286,7 +286,7 @@ class Notifications
         $jobsFailed = self::getJobDailyCount();
         $appName = config('app.name');
         $url = url('exceptions');
-        $subjects = config('custom-log.emails.subject');
+        $message = config('custom-log.emails.message');
         return <<<HTML
                     <!DOCTYPE html>
                     <html>
@@ -421,7 +421,7 @@ class Notifications
                                     <table border="0" cellpadding="0" cellspacing="0" width="100%" style="max-width: 600px;">
                                         <tr>
                                             <td bgcolor="#ffffff" align="left" style="padding: 20px 30px 40px 30px; color: #666666; font-family: 'Lato', Helvetica, Arial, sans-serif; font-size: 18px; font-weight: 400; line-height: 25px;">
-                                                <p style="margin: 0;">{config('custom-log.emails.message')}.</p>
+                                                <p style="margin: 0;">{$message}.</p>
                                             </td>
                                         </tr>
                                         <tr>
@@ -430,7 +430,7 @@ class Notifications
                                                 <tr>
                                                     <td bgcolor="#FFECD1" align="center" style="padding: 30px 30px 30px 30px; border-radius: 4px 4px 4px 4px; color: #666666; font-family: 'Lato', Helvetica, Arial, sans-serif; font-size: 18px; font-weight: 400; line-height: 25px;">
                                                         <h1 style="margin: 0;"><a href="#" target="_blank" style="color: #FFA73B;">Total Exceptions:</a></h1>
-                                                        <h3 style="font-size: 20px; font-weight: 400; color: #111111; margin: 0;">{$totalErrors}</h3>
+                                                        <h2 style="color: #111111; margin: 0;">{$totalErrors}</h2>
                                                     </td>
                                                 </tr>
                                             </table>
@@ -442,7 +442,7 @@ class Notifications
                                                 <tr>
                                                     <td bgcolor="#FFECD1" align="center" style="padding: 30px 30px 30px 30px; border-radius: 4px 4px 4px 4px; color: #666666; font-family: 'Lato', Helvetica, Arial, sans-serif; font-size: 18px; font-weight: 400; line-height: 25px;">
                                                         <h1 style="margin: 0;"><a href="#" target="_blank" style="color: #FFA73B;">Total Jobs failed:</a></h1>
-                                                        <h3 style="font-size: 20px; font-weight: 400; color: #111111; margin: 0;">{$jobsFailed}</h3>
+                                                        <h2 style=" color: #111111; margin: 0;">{$jobsFailed}</h2>
                                                     </td>
                                                 </tr>
                                             </table>
