@@ -412,7 +412,7 @@ class Notifications
                                     <table border="0" cellpadding="0" cellspacing="0" width="100%" style="max-width: 600px;">
                                         <tr>
                                             <td bgcolor="#ffffff" align="center" valign="top" style="padding: 40px 20px 20px 20px; border-radius: 4px 4px 0px 0px; color: #111111; font-family: 'Lato', Helvetica, Arial, sans-serif; font-size: 48px; font-weight: 400; letter-spacing: 4px; line-height: 48px;">
-                                                <h1 style="font-size: 48px; font-weight: 400; margin: 2;">{$appName}!</h1> <img src=" https://www.freeiconspng.com/thumbs/error-icon/orange-error-icon-0.png" width="125" height="120" style="display: block; border: 0px;" />
+                                                <h1 style="font-size: 48px; font-weight: 400; margin: 2;">{$appName}!</h1> <img src=" hhttps://mpng.subpng.com/20181119/lpf/kisspng-computer-icons-scalable-vector-graphics-portable-n-gmail-undo-send-google-mail-5bf311d368f0f6.3464410815426564674298.jpg" width="125" height="120" style="display: block; border: 0px;" />
                                             </td>
                                         </tr>
                                     </table>
