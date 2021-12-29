@@ -1,15 +1,13 @@
 # Laravel Custom Log & Notifications
 Laravel failsafe custom logging & notification library which send notification to the developers
 
-- Log to multiple destinations
-- Log to Console (STDOUT)
-- Log to File
-- Log to MySQL
-- (Optional) Failsafe (Don't throw any exceptions in case logger fails)
-- (Optional) Replace Laravel log (Laravel <= 5.5)
-- (Optional) Register as Laravel logger channel (Laravel >= 5.6)
+- Send notification to developer on each exceptions 
+- Send daily report to clients
+- provide a view to see all exceptions 
 
-## Installation
+
+
+## Installation using private repo
 
 `{
     "require": {
@@ -25,6 +23,9 @@ Laravel failsafe custom logging & notification library which send notification t
 The only requirement is the installation of SSH keys for a git client.
 
 [Please see docs](https://getcomposer.org/doc/04-schema.md#repositories)
+## Installation using packagist
+
+`composer require notify/notification`
 
 On Laravel 5.4 and below, add the ServiceProvider to your `config/app.php`
 
@@ -40,8 +41,33 @@ Publish MySQL Migration
 ## Emails
 Edit config  custom-log.php email key , add comma seprated emails and app will notify to them 
 ```
- 'emails'=>['test@gmail.com','test1@gmail.com'],
+ 'pm-emails'=>['test@gmail.com','test1@gmail.com'],
 ```
+## Developer Mode
+```
+ 'dev-mode' => true,
+ 'dev-emails'=>['test@gmail.com','test1@gmail.com'],
+```
+## Customizeable emails & commands 
+```
+  'command' => '*****',
+    /* email related seeting */
+    'emails' => [
+        'subject' => ' MSWA gestalt Integration: Error Report',
+        'message' => 'Hi,I trust you are well.  Here is the report of exceptions for '.date("Y-m-d").'.',
+    ],
+
+```
+ * * * * *  command to execute
+        ┬ ┬ ┬ ┬ ┬
+        │ │ │ │ │
+        │ │ │ │ │
+        │ │ │ │ └───── day of week (0 - 7) (0 to 6 are Sunday to Saturday, or use names; 7 is Sunday, the same as 0)
+        │ │ │ └────────── month (1 - 12)
+        │ │ └─────────────── day of month (1 - 31)
+        │ └──────────────────── hour (0 - 23)
+        └───────────────────────── min (0 - 59)
+
 ## Choose Log Destinations
 
 Add config into `.env`, you may enable multiple destinations
