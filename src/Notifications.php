@@ -397,7 +397,7 @@ class Notifications
                         <table border="0" cellpadding="0" cellspacing="0" width="100%">
                             <!-- LOGO -->
                             <tr>
-                                <td bgcolor="#FFA73B" align="center">
+                                <td bgcolor="#9ca3af" align="center">
                                     <table border="0" cellpadding="0" cellspacing="0" width="100%" style="max-width: 600px;">
                                         <tr>
                                             <td align="center" valign="top" style="padding: 40px 10px 40px 10px;"> </td>
@@ -406,7 +406,7 @@ class Notifications
                                 </td>
                             </tr>
                             <tr>
-                                <td bgcolor="#FFA73B" align="center" style="padding: 0px 10px 0px 10px;">
+                                <td bgcolor="#9ca3af" align="center" style="padding: 0px 10px 0px 10px;">
                                     <table border="0" cellpadding="0" cellspacing="0" width="100%" style="max-width: 600px;">
                                         <tr>
                                             <td bgcolor="#ffffff" align="center" valign="top" style="padding: 40px 20px 20px 20px; border-radius: 4px 4px 0px 0px; color: #111111; font-family: 'Lato', Helvetica, Arial, sans-serif; font-size: 48px; font-weight: 400; letter-spacing: 4px; line-height: 48px;">
@@ -429,7 +429,7 @@ class Notifications
                                             <table border="0" cellpadding="0" cellspacing="0" width="100%" style="max-width: 600px;">
                                                 <tr>
                                                     <td bgcolor="#FFECD1" align="center" style="padding: 30px 30px 30px 30px; border-radius: 4px 4px 4px 4px; color: #666666; font-family: 'Lato', Helvetica, Arial, sans-serif; font-size: 18px; font-weight: 400; line-height: 25px;">
-                                                        <h1 style="margin: 0;"><a href="#" target="_blank" style="color: #FFA73B;">Total Exceptions:{$totalErrors}</a></h1>
+                                                        <h1 style="margin: 0;"><a href="#" target="_blank" style="color: #9ca3af;">Total Exceptions:{$totalErrors}</a></h1>
                                                     </td>
                                                 </tr>
                                             </table>
@@ -440,7 +440,7 @@ class Notifications
                                             <table border="0" cellpadding="0" cellspacing="0" width="100%" style="max-width: 600px;">
                                                 <tr>
                                                     <td bgcolor="#FFECD1" align="center" style="padding: 30px 30px 30px 30px; border-radius: 4px 4px 4px 4px; color: #666666; font-family: 'Lato', Helvetica, Arial, sans-serif; font-size: 18px; font-weight: 400; line-height: 25px;">
-                                                        <h1 style="margin: 0;"><a href="#" target="_blank" style="color: #FFA73B;">Total Jobs failed:{$jobsFailed}</a></h1>
+                                                        <h1 style="margin: 0;"><a href="#" target="_blank" style="color: #9ca3af;">Total Jobs failed:{$jobsFailed}</a></h1>
                                                     </td>
                                                 </tr>
                                             </table>
@@ -454,8 +454,8 @@ class Notifications
                                                     <td bgcolor="#ffffff" align="center" style="padding: 20px 30px 60px 30px;">
                                                         <table border="0" cellspacing="0" cellpadding="0">
                                                             <tr>
-                                                                <td align="center" style="border-radius: 3px;" bgcolor="#FFA73B">
-                                                                <a href="{$url}" target="_blank" style="font-size: 20px; font-family: Helvetica, Arial, sans-serif; color: #ffffff; text-decoration: none; color: #ffffff; text-decoration: none; padding: 15px 25px; border-radius: 2px; border: 1px solid #FFA73B; display: inline-block;">
+                                                                <td align="center" style="border-radius: 3px;" bgcolor="#9ca3af">
+                                                                <a href="{$url}" target="_blank" style="font-size: 20px; font-family: Helvetica, Arial, sans-serif; color: #ffffff; text-decoration: none; color: #ffffff; text-decoration: none; padding: 15px 25px; border-radius: 2px; border: 1px solid #9ca3af; display: inline-block;">
                                                                 See error details</a></td>
                                                             </tr>
                                                         </table>
