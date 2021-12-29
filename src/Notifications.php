@@ -393,7 +393,9 @@ class Notifications
 
                     <body style="background-color: #f4f4f4; margin: 0 !important; padding: 0 !important;">
                         <!-- HIDDEN PREHEADER TEXT -->
-                        <div style="display: none; font-size: 1px; color: #fefefe; line-height: 1px; font-family: 'Lato', Helvetica, Arial, sans-serif; max-height: 0px; max-width: 0px; opacity: 0; overflow: hidden;"> We're thrilled to have you here! Get ready to dive into your new account. </div>
+                        <div style="display: none; font-size: 1px; color: #fefefe; line-height: 1px; font-family: 'Lato', Helvetica, Arial, sans-serif; max-height: 0px; max-width: 0px; opacity: 0; overflow: hidden;">
+                         This email is provide you reporting about integration projects status. 
+                        </div>
                         <table border="0" cellpadding="0" cellspacing="0" width="100%">
                             <!-- LOGO -->
                             <tr>
@@ -428,8 +430,8 @@ class Notifications
                                         <td bgcolor="#f4f4f4" align="center" style="padding: 30px 10px 0px 10px;">
                                             <table border="0" cellpadding="0" cellspacing="0" width="100%" style="max-width: 600px;">
                                                 <tr>
-                                                    <td bgcolor="#FFECD1" align="center" style="padding: 30px 30px 30px 30px; border-radius: 4px 4px 4px 4px; color: #666666; font-family: 'Lato', Helvetica, Arial, sans-serif; font-size: 18px; font-weight: 400; line-height: 25px;">
-                                                        <h1 style="margin: 0;"><a href="#" target="_blank" style="color: #9ca3af;">Total Exceptions:{$totalErrors}</a></h1>
+                                                    <td bgcolor="#9ca3af" align="center" style="padding: 30px 30px 30px 30px; border-radius: 4px 4px 4px 4px; color: #666666; font-family: 'Lato', Helvetica, Arial, sans-serif; font-size: 18px; font-weight: 400; line-height: 25px;">
+                                                        <h1 style="margin: 0;"><a href="#" target="_blank" style="color:white;">Total Exceptions:{$totalErrors}</a></h1>
                                                     </td>
                                                 </tr>
                                             </table>
@@ -439,8 +441,8 @@ class Notifications
                                         <td bgcolor="#f4f4f4" align="center" style="padding: 30px 10px 0px 10px;">
                                             <table border="0" cellpadding="0" cellspacing="0" width="100%" style="max-width: 600px;">
                                                 <tr>
-                                                    <td bgcolor="#FFECD1" align="center" style="padding: 30px 30px 30px 30px; border-radius: 4px 4px 4px 4px; color: #666666; font-family: 'Lato', Helvetica, Arial, sans-serif; font-size: 18px; font-weight: 400; line-height: 25px;">
-                                                        <h1 style="margin: 0;"><a href="#" target="_blank" style="color: #9ca3af;">Total Jobs failed:{$jobsFailed}</a></h1>
+                                                    <td bgcolor="#9ca3af" align="center" style="padding: 30px 30px 30px 30px; border-radius: 4px 4px 4px 4px; color: #666666; font-family: 'Lato', Helvetica, Arial, sans-serif; font-size: 18px; font-weight: 400; line-height: 25px;">
+                                                        <h1 style="margin: 0;"><a href="#" target="_blank" style="color: white;">Total Jobs failed:{$jobsFailed}</a></h1>
                                                     </td>
                                                 </tr>
                                             </table>
