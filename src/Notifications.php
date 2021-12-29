@@ -497,14 +497,9 @@ class Notifications
                 </tr>
                 <tr>
                     <td>
-                        <h3 style="font-family: 'Roboto', sans-serif;font-weight: 700;padding:0 20px;">Message</h3>
-                    </td>
-                </tr>
-                <tr>
-                    <td>
-                        <p style="padding:0 20px;margin:0 0 20px 0;line-height:1.8;font-size:16px;font-family: 'Roboto', sans-serif;font-weight: 400;">
+                        <h3 style="padding:0 20px;margin:0 0 20px 0;line-height:1.8;font-size:16px;font-family: 'Roboto', sans-serif;">
                         {$error->message}
-                    </p>
+                       </h3>
                     </td>
                 </tr>
                 <tr>
