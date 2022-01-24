@@ -11,7 +11,7 @@ use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
 use Notify\LaravelCustomLog\Notifications;
 use Illuminate\Contracts\Queue\ShouldBeUnique;
-use Notify\LaravelCustomLogy\Mail\ExceptionEmail;
+use Notify\LaravelCustomLog\Mail\ExceptionEmail;
 
 class SendExceptionEmailJob implements ShouldQueue
 {

@@ -11,7 +11,7 @@ use Notify\LaravelCustomLog\Notifications;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Contracts\Queue\ShouldBeUnique;
-use Notify\LaravelCustomLogy\Mail\ReportEmail;
+use Notify\LaravelCustomLog\Mail\ReportEmail;
 
 class SendReportEmailJob implements ShouldQueue
 {

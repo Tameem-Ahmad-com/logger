@@ -1,6 +1,6 @@
 <?php
 
-namespace Notify\LaravelCustomLogy\Mail;
+namespace Notify\LaravelCustomLog\Mail;
 
 use Illuminate\Bus\Queueable;
 use Illuminate\Mail\Mailable;
