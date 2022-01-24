@@ -1,5 +1,5 @@
 <?php 
-namespace Notify\Http\Controllers;
+namespace Notify\LaravelCustomLog\Http\Controllers;
 
 use Illuminate\Support\Facades\DB;
 use Notify\Http\Controllers\Controller;
@@ -7,9 +7,6 @@ use Notify\Http\Controllers\Controller;
 class NotifyController extends Controller{
     
   
-    public static function getExceptions()
-    {
-       
-    }
+   
 
 }

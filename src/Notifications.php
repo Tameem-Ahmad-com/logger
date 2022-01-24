@@ -220,6 +220,18 @@ class Notifications
     }
 
     /**
+     * getEmailLogs
+     *
+     * @return \Illuminate\Support\Collection
+     */
+    public static function getEmailLogs()
+    {
+
+        return DB::table(config('custom-log.mysql.table'))->whereIn('channel', ['job','exception'])
+            ->whereDate('created_at', Carbon::today())->take(50)->get();
+    }
+
+    /**
      * getLogs
      *
      * @return \Illuminate\Support\Collection

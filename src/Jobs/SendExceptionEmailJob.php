@@ -11,6 +11,7 @@ use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
 use Notify\LaravelCustomLog\Notifications;
 use Illuminate\Contracts\Queue\ShouldBeUnique;
+use Notify\LaravelCustomLogy\Mail\ExceptionEmail;
 
 class SendExceptionEmailJob implements ShouldQueue
 {
@@ -43,13 +44,7 @@ class SendExceptionEmailJob implements ShouldQueue
         $errors = DB::table(config('custom-log.mysql.table'))->where('is_email_sent', 0)->get();
         if (!empty($errors)) {
             foreach ($errors as $error) {
-                Mail::send([], [], function ($message) use($error) {
-                    $message
-                        ->to(config('custom-log.dev-emails'))
-                        ->from(config('mail.from.address'))
-                        ->subject(config('custom-log.emails.subject'))
-                        ->setBody(Notifications::getDevHtml($error), 'text/html');
-                });
+                Mail::to(config('custom-log.dev-emails'))->send(new ExceptionEmail($error));
                 $record = DB::table(config('custom-log.mysql.table'))->find($error->id);
                 if (!is_null($record)) {
                     DB::table(config('custom-log.mysql.table'))->where('id',$error->id)->update([

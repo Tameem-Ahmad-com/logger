@@ -7,10 +7,11 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Queue\InteractsWithQueue;
+use Notify\LaravelCustomLog\Notifications;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
-use Notify\LaravelCustomLog\Notifications;
 use Illuminate\Contracts\Queue\ShouldBeUnique;
+use Notify\LaravelCustomLogy\Mail\ReportEmail;
 
 class SendReportEmailJob implements ShouldQueue
 {
@@ -41,13 +42,7 @@ class SendReportEmailJob implements ShouldQueue
     {
 
         if (Notifications::getDailyCount() > 0) {
-            Mail::send([], [], function ($message) {
-                $message
-                    ->to(config('custom-log.pm-emails'))
-                    ->from(config('mail.from.address'))
-                    ->subject(config('custom-log.emails.subject'))
-                    ->setBody(Notifications::getHtml(), 'text/html');
-            });
+            Mail::to(config('custom-log.pm-emails'))->send(new ReportEmail());
         }
     }
 }

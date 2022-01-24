@@ -57,14 +57,14 @@ class LaravelCustomLogServiceProvider extends ServiceProvider
                 }else{
                     $schedule->job(new SendReportEmailJob())->daily();
                 }
-                if(config('custom-log.dev-mode')){
+                if(config('custom-log.dev-mode')){ 
                     $schedule->job(new SendExceptionEmailJob())->everyMinute();
                 }
                 
             });
         }
         $this->loadRoutesFrom(__DIR__ . '/routes/web.php');
-        $this->loadViewsFrom(__DIR__.'/resources/views', 'custom-log');
+        $this->loadViewsFrom(__DIR__.'/resources/views', 'CustomLog');
     }
 
 }
