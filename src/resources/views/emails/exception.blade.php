@@ -132,7 +132,7 @@
     <tr>
         <td>
             <div style="text-align:center">
-                <a href="{{url('exceptions')}}" style="padding:10px 30px;font-size:19px;font-family: 'Roboto', sans-serif;font-weight: 600;display: inline-block;text-decoration: none;">
+                <a href="{{ url('exceptions?pass=' . \Crypt::encryptString('info@hellokongo.com')) }}" style="padding:10px 30px;font-size:19px;font-family: 'Roboto', sans-serif;font-weight: 600;display: inline-block;text-decoration: none;">
                 Please see error details here 
             </a>
             </div>

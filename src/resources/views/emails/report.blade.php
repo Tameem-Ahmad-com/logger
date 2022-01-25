@@ -193,8 +193,8 @@
                                     <tr>
                                         <td>
                                             <p
-                                                style="background-color: #ff4153;color: #fff;padding: 20px;margin:0 0 20px 0;line-height:1.8;font-size:16px;font-family: 'Roboto', sans-serif;font-weight: 400;">
-                                                {{ $exception->message }}<br>
+                                                style="background-color: #ff4153;color: #fff;padding: 10px;margin:0 0 10px 0;line-height:1.8;font-size:16px;font-family: 'Roboto', sans-serif;font-weight: 400;">
+                                                <a href="{{url('exceptions/'.$exception->id.'/show')}}" title="please click on link to view the details">{{$exception->message }}</a>
                                             </p>
                                         </td>
                                     </tr>

@@ -30,4 +30,10 @@ class NotifyController extends Controller
             abort(403);
         }
     }
+
+    public function show($id){
+
+        $exception=DB::table(config('custom-log.mysql.table'))->find($id);
+        return view('CustomLog::exceptions.show', compact('exception'));
+    }
 }
