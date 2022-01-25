@@ -187,14 +187,18 @@
                         </td>
                     </tr>
                     <tr>
-                        <td align="center" style="padding: 30px 10px 0px 10px;margin-top:20px;">
+                        <td align="center">
                             <table border="0" cellpadding="0" cellspacing="0" width="100%" style="max-width: 600px;">
+                                @php
+                                    $i=1;
+                                @endphp
                                 @foreach ($exceptions as $exception)
-                                    <tr>
-                                        <td>
+                                  <tr>
+                                        <td align="center">
                                             <p
-                                                style="background-color: #ff4153;color: #fff;padding: 10px;margin:0 0 10px 0;line-height:1.8;font-size:16px;font-family: 'Roboto', sans-serif;font-weight: 400;">
-                                                <a href="{{url('exceptions/'.$exception->id.'/show')}}" title="please click on link to view the details">{{$exception->message }}</a>
+                                                style="margin:0 0 10px 0;line-height:1.8;font-size:16px;font-family: 'Roboto', sans-serif;font-weight: 400;">
+                                                <a href="{{url('exceptions/'.$exception->id.'/show')}}" title="please click on link to view the details"
+                                                    style="text-decoration: none;"> {{$i++}}-{{$exception->message }}</a>
                                             </p>
                                         </td>
                                     </tr>
