@@ -11,23 +11,26 @@ class ReportEmail extends Mailable
 {
     use Queueable, SerializesModels;
 
-  
-    public $totalErrors;
-    public $jobsFailed;
-    public $message;
-    public $exceptions;
+
+    protected $totalErrors;
+    protected $jobsFailed;
+    protected $exceptions;
 
     public function __construct()
     {
         $this->totalErrors = Notifications::getDailyCount();
         $this->jobsFailed = Notifications::getJobDailyCount();
-        $this->message = config('custom-log.emails.message');
-        $this->exceptions=Notifications::getEmailLogs();
+        $this->exceptions = Notifications::getEmailLogs();
     }
 
     public function build()
     {
-        return $this->view('CustomLog::emails.report')->subject(config('custom-log.emails.subject'));
+        return $this->view('CustomLog::emails.report')->subject(config('custom-log.emails.subject'))
+            ->from(config('mail.from.address'))->with([
+                'exceptions' => $this->exceptions,
+                'totalErrors' => $this->totalErrors,
+                'jobsFailed' => $this->jobsFailed,
 
+            ]);
     }
 }

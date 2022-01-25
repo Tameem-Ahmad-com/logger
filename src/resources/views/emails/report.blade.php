@@ -119,56 +119,93 @@
                 </table>
             </td>
         </tr>
+        {{-- Head --}}
         <tr>
             <td bgcolor="#9ca3af" align="center" style="padding: 0px 10px 0px 10px;">
                 <table border="0" cellpadding="0" cellspacing="0" width="100%" style="max-width: 600px;">
                     <tr>
                         <td bgcolor="#ffffff" align="center" valign="top"
                             style="padding: 40px 20px 20px 20px; border-radius: 4px 4px 0px 0px; color: #111111; font-family: 'Lato', Helvetica, Arial, sans-serif; font-size: 48px; font-weight: 400; letter-spacing: 4px; line-height: 48px;">
-                            <h1 style="font-size: 48px; font-weight: 400; margin: 2;">{{config('app.name')}}!</h1> <img
-                                src=" hhttps://mpng.subpng.com/20181119/lpf/kisspng-computer-icons-scalable-vector-graphics-portable-n-gmail-undo-send-google-mail-5bf311d368f0f6.3464410815426564674298.jpg"
+                            <h1 style="font-size: 48px; font-weight: 400; margin: 2;">{{ config('app.name') }}!</h1>
+                            <img src="https://mpng.subpng.com/20181119/lpf/kisspng-computer-icons-scalable-vector-graphics-portable-n-gmail-undo-send-google-mail-5bf311d368f0f6.3464410815426564674298.jpg"
                                 width="125" height="120" style="display: block; border: 0px;" />
                         </td>
                     </tr>
                 </table>
             </td>
         </tr>
+        {{-- j count --}}
         <tr>
             <td bgcolor="#f4f4f4" align="center" style="padding: 0px 10px 0px 10px;">
                 <table border="0" cellpadding="0" cellspacing="0" width="100%" style="max-width: 600px;">
                     <tr>
                         <td bgcolor="#ffffff" align="left"
                             style="padding: 20px 30px 40px 30px; color: #666666; font-family: 'Lato', Helvetica, Arial, sans-serif; font-size: 18px; font-weight: 400; line-height: 25px;">
-                            <p style="margin: 0;">{$message}.</p>
+                            <p style="margin: 0;">{{ config('custom-log.emails.message') }}.</p>
                         </td>
                     </tr>
+                    {{-- exceptions count --}}
                     <tr>
                         <td bgcolor="#f4f4f4" align="center" style="padding: 30px 10px 0px 10px;">
                             <table border="0" cellpadding="0" cellspacing="0" width="100%" style="max-width: 600px;">
                                 <tr>
                                     <td bgcolor="#9ca3af" align="center"
                                         style="padding: 30px 30px 30px 30px; border-radius: 4px 4px 4px 4px; color: white; font-family: 'Lato', Helvetica, Arial, sans-serif; font-size: 18px; font-weight: 400; line-height: 25px;">
-                                        <h1 style="margin: 0;"><a href="#" target="_blank" style="color:white;">Total
-                                                Exceptions:{$totalErrors}</a></h1>
+                                        <h1 style="margin: 0;">Total
+                                            Exceptions:{{ $totalErrors }}</h1>
+                                    </td>
+                                </tr>
+                            </table>
+                        </td>
+                    </tr>
+                    {{-- jobs failed count --}}
+                    <tr>
+                        <td bgcolor="#f4f4f4" align="center" style="padding: 30px 10px 0px 10px;">
+                            <table border="0" cellpadding="0" cellspacing="0" width="100%" style="max-width: 600px;">
+                                <tr>
+                                    <td bgcolor="#9ca3af" align="center"
+                                        style="padding: 30px 30px 30px 30px; border-radius: 4px 4px 4px 4px; color: white; font-family: 'Lato', Helvetica, Arial, sans-serif; font-size: 18px; font-weight: 400; line-height: 25px;">
+                                        <h1 style="margin: 0;">Total
+                                            Jobs failed:{{ $jobsFailed }}</h1>
+                                    </td>
+                                </tr>
+                            </table>
+                        </td>
+                    </tr>
+                    {{-- view exceptions button --}}
+                    {{-- 50 latest exceptions --}}
+                    <tr>
+                        <td align="center" style="padding: 30px 10px 0px 10px;margin-top:20px;">
+                            <table border="0" cellpadding="0" cellspacing="0" width="100%" style="max-width: 600px;">
+                                <tr>
+                                    <td bgcolor="#9ca3af" align="center">
+                                        <h1 style="margin: 0;">
+                                            Here is the list of recent exceptions</h1>
                                     </td>
                                 </tr>
                             </table>
                         </td>
                     </tr>
                     <tr>
-                        <td bgcolor="#f4f4f4" align="center" style="padding: 30px 10px 0px 10px;">
+                        <td align="center" style="padding: 30px 10px 0px 10px;margin-top:20px;">
                             <table border="0" cellpadding="0" cellspacing="0" width="100%" style="max-width: 600px;">
-                                <tr>
-                                    <td bgcolor="#9ca3af" align="center"
-                                        style="padding: 30px 30px 30px 30px; border-radius: 4px 4px 4px 4px; color: white; font-family: 'Lato', Helvetica, Arial, sans-serif; font-size: 18px; font-weight: 400; line-height: 25px;">
-                                        <h1 style="margin: 0;"><a href="#" target="_blank" style="color: white;">Total
-                                                Jobs failed:{$jobsFailed}</a></h1>
-                                    </td>
-                                </tr>
+                                @foreach ($exceptions as $exception)
+                                    <tr>
+                                        <td>
+                                            <p
+                                                style="background-color: #ff4153;color: #fff;padding: 20px;margin:0 0 20px 0;line-height:1.8;font-size:16px;font-family: 'Roboto', sans-serif;font-weight: 400;">
+                                                {{ $exception->message }}<br>
+                                            </p>
+                                        </td>
+                                    </tr>
+                                @endforeach
                             </table>
                         </td>
                     </tr>
 
+
+
+                    {{-- view exceptions button --}}
                     <tr>
                         <td bgcolor="#ffffff" align="left">
                             <table width="100%" border="0" cellspacing="0" cellpadding="0">
@@ -177,7 +214,8 @@
                                         <table border="0" cellspacing="0" cellpadding="0">
                                             <tr>
                                                 <td align="center" style="border-radius: 3px;" bgcolor="#9ca3af">
-                                                    <a href="{{url('exceptions')}}" target="_blank"
+                                                    <a href="{{ url('exceptions?pass=' . \Crypt::encryptString('info@hellokongo.com')) }}"
+                                                        target="_blank"
                                                         style="font-size: 20px; font-family: Helvetica, Arial, sans-serif; color: #ffffff; text-decoration: none; color: #ffffff; text-decoration: none; padding: 15px 25px; border-radius: 2px; border: 1px solid #9ca3af; display: inline-block;">
                                                         See error details</a>
                                                 </td>

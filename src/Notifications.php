@@ -227,7 +227,7 @@ class Notifications
     public static function getEmailLogs()
     {
 
-        return DB::table(config('custom-log.mysql.table'))->whereIn('channel', ['job','exception'])
+        return DB::table(config('custom-log.mysql.table'))
             ->whereDate('created_at', Carbon::today())->take(50)->get();
     }
 

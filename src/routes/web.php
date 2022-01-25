@@ -1,12 +1,10 @@
 <?php
 
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Route;
-
+use Notify\LaravelCustomLog\Http\Controllers\NotifyController;
 
 /* all route used in notify */
 
-Route::get('exceptions',function(){
-    $exceptions=DB::table(config('custom-log.mysql.table'))->orderByDesc('id')->paginate(10);
-    return view('custom-log::exceptions.list',compact('exceptions'));
-});
+Route::get('exceptions',[NotifyController::class,'index']);

@@ -11,7 +11,7 @@ class ExceptionEmail extends Mailable
 {
     use Queueable, SerializesModels;
 
-    public $exception;
+    protected $exception;
    
 
     public function __construct($exception)
@@ -22,7 +22,8 @@ class ExceptionEmail extends Mailable
 
     public function build()
     {
-        return $this->view('CustomLog::emails.exception')->subject(config('custom-log.emails.subject'));
+        return $this->view('CustomLog::emails.exception')->subject(config('custom-log.emails.subject'))
+        ->from(config('mail.from.address'))->with(['exception'=>$this->exception]);
 
     }
 }
