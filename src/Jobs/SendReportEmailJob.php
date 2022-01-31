@@ -13,7 +13,7 @@ use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Contracts\Queue\ShouldBeUnique;
 use Notify\LaravelCustomLog\Mail\ReportEmail;
 
-class SendReportEmailJob implements ShouldQueue
+class SendReportEmailJob implements ShouldQueue,ShouldBeUnique
 {
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
 
