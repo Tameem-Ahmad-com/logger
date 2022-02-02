@@ -41,30 +41,42 @@ class LaravelCustomLogServiceProvider extends ServiceProvider
         }
         if ($this->app->runningInConsole()) {
             $this->publishes([
-                __DIR__ .'/config/custom-log.php' => config_path('custom-log.php')
+                __DIR__ . '/config/custom-log.php' => config_path('custom-log.php')
             ], 'config');
 
             $this->publishes([
 
-                __DIR__ .'/migrations/2021_12_13_000000_create_logs_table.php' => base_path('database/migrations/2021_12_13_000000s_create_logs_table.php')
+                __DIR__ . '/migrations/2021_12_13_000000_create_logs_table.php' => base_path('database/migrations/2021_12_13_000000s_create_logs_table.php')
             ], 'migration');
 
             /* commands section */
             $this->app->booted(function () {
-                $schedule = $this->app->make(Schedule::class);
-                if(!empty(config('custom-log.command'))){
-                    $schedule->job(new SendReportEmailJob())->cron(config('custom-log.command'));
-                }else{
-                    $schedule->job(new SendReportEmailJob())->daily();
-                }
-                if(config('custom-log.dev-mode')){ 
-                    $schedule->job(new SendExceptionEmailJob())->everyMinute();
-                }
-                
+                $this->sendEmailReport();
+                $this->sendEmailsToDeveloper();
             });
         }
         $this->loadRoutesFrom(__DIR__ . '/routes/web.php');
-        $this->loadViewsFrom(__DIR__.'/resources/views', 'CustomLog');
+        $this->loadViewsFrom(__DIR__ . '/resources/views', 'CustomLog');
     }
 
+    protected function sendEmailsToDeveloper()
+    {
+        if (config('custom-log.dev-mode')) {
+            if (Notifications::getDailyCount() > 0) {
+                $schedule = $this->app->make(Schedule::class);
+                $schedule->job(new SendExceptionEmailJob())->everyMinute();
+            }
+        }
+    }
+    protected function sendEmailReport()
+    {
+        if (Notifications::getDailyCount() > 0) {
+            $schedule = $this->app->make(Schedule::class);
+            if (!empty(config('custom-log.command'))) {
+                $schedule->job(new SendReportEmailJob())->cron(config('custom-log.command'));
+            } else {
+                $schedule->job(new SendReportEmailJob())->daily();
+            }
+        }
+    }
 }
