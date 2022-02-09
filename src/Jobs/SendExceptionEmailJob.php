@@ -13,7 +13,7 @@ use Notify\LaravelCustomLog\Notifications;
 use Illuminate\Contracts\Queue\ShouldBeUnique;
 use Notify\LaravelCustomLog\Mail\ExceptionEmail;
 
-class SendExceptionEmailJob implements ShouldQueue, ShouldBeUnique
+class SendExceptionEmailJob implements ShouldQueue
 {
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
 
@@ -29,15 +29,7 @@ class SendExceptionEmailJob implements ShouldQueue, ShouldBeUnique
      * @var mixed
      */
     protected $e;
-    /**
-     * The unique ID of the job.
-     *
-     * @return string
-     */
-    public function uniqueId()
-    {
-        return substr(base_convert(sha1(uniqid(mt_rand())), 16, 36), 0, 10);
-    }
+   
     public function __construct()
     {
     }

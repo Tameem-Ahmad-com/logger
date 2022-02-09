@@ -13,7 +13,7 @@ use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Contracts\Queue\ShouldBeUnique;
 use Notify\LaravelCustomLog\Mail\ReportEmail;
 
-class SendReportEmailJob implements ShouldQueue,ShouldBeUnique
+class SendReportEmailJob implements ShouldQueue
 {
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
 
@@ -30,15 +30,7 @@ class SendReportEmailJob implements ShouldQueue,ShouldBeUnique
      */
     protected $e;
 
-     /**
-     * The unique ID of the job.
-     *
-     * @return string
-     */
-    public function uniqueId()
-    {
-        return substr(base_convert(sha1(uniqid(mt_rand())), 16, 36), 0,10);
-    }
+     
     public function __construct()
     {
     }
