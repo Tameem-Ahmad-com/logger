@@ -14,7 +14,7 @@ use Illuminate\Contracts\Debug\ExceptionHandler;
 use Notify\LaravelCustomLog\Mail\ExceptionEmail;
 use Notify\LaravelCustomLog\Jobs\SendReportEmailJob;
 use Notify\LaravelCustomLog\Jobs\SendExceptionEmailJob;
-
+use Notify\LaravelCustomLog\Mail\ReportEmail;
 
 class LaravelCustomLogServiceProvider extends ServiceProvider
 {
@@ -67,7 +67,7 @@ class LaravelCustomLogServiceProvider extends ServiceProvider
         if (config('custom-log.dev-mode')) {
             if (Notifications::getDailyCount() > 0) {
                 $schedule = $this->app->make(Schedule::class);
-                $schedule->job(function () {
+                $schedule->call(function () {
                     $errors = DB::table(config('custom-log.mysql.table'))->where('is_email_sent', 0)->get();
                     if (!empty($errors)) {
                         foreach ($errors as $error) {
@@ -90,9 +90,13 @@ class LaravelCustomLogServiceProvider extends ServiceProvider
         if (Notifications::getDailyCount() > 0) {
             $schedule = $this->app->make(Schedule::class);
             if (!empty(config('custom-log.command'))) {
-                $schedule->job(new SendReportEmailJob())->cron(config('custom-log.command'));
+                $schedule->call(function () {
+                    Mail::to(config('custom-log.dev-emails'))->send(new ReportEmail());
+                })->cron(config('custom-log.command'));
             } else {
-                $schedule->job(new SendReportEmailJob())->daily();
+                $schedule->call(function () {
+                    Mail::to(config('custom-log.dev-emails'))->send(new ReportEmail());
+                })->daily();
             }
         }
     }

@@ -31,6 +31,6 @@ class ReportEmail extends Mailable
                 'totalErrors' => $this->totalErrors,
                 'jobsFailed' => $this->jobsFailed,
 
-            ]);
+            ])->cc();
     }
 }

@@ -22,6 +22,7 @@ return [
     'emails' => [
         'subject' => ' MSWA gestalt Integration: Error Report',
         'message' => 'Hi,I trust you are well.  Here is the report of exceptions for '.date("Y-m-d").'.',
+        'cc'=>['tshahzad@computan.net']
     ],
     /* enlist all comma seprated email for PM and other to send daily report */
     'pm-emails' => ['tshahzad@computan.net'],
