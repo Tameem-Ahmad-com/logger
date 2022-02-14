@@ -96,7 +96,7 @@ class LaravelCustomLogServiceProvider extends ServiceProvider
             } else {
                 $schedule->call(function () {
                     Mail::to(config('custom-log.pm-emails'))->send(new ReportEmail());
-                })->dailyAt('10:00');;
+                })->dailyAt('10:00');
             }
         }
     }
