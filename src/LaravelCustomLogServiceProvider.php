@@ -43,16 +43,8 @@ class LaravelCustomLogServiceProvider extends ServiceProvider
             });
         }
         if ($this->app->runningInConsole()) {
-            $this->publishes([
-                __DIR__ . '/config/custom-log.php' => config_path('custom-log.php')
-            ], 'config');
-
-            $this->publishes([
-
-                __DIR__ . '/migrations/2021_12_13_000000_create_logs_table.php' => base_path('database/migrations/2021_12_13_000000s_create_logs_table.php')
-            ], 'migration');
-
-            /* commands section */
+            $this->publishRequiredFiles();
+           /* commands section */
             $this->app->booted(function () {
                 $this->sendEmailReport();
                 $this->sendEmailsToDeveloper();
@@ -99,5 +91,17 @@ class LaravelCustomLogServiceProvider extends ServiceProvider
                 })->dailyAt('10:00');
             }
         }
+    }
+
+    protected function publishRequiredFiles()
+    {
+        $this->publishes([
+            __DIR__ . '/config/custom-log.php' => config_path('custom-log.php')
+        ], 'config');
+
+        $this->publishes([
+
+            __DIR__ . '/migrations/2021_12_13_000000_create_logs_table.php' => base_path('database/migrations/2021_12_13_000000s_create_logs_table.php')
+        ], 'migration');
     }
 }
