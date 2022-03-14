@@ -6,14 +6,11 @@ namespace Notify\LaravelCustomLog;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Queue;
-use Illuminate\Support\Facades\Route;
 use Illuminate\Queue\Events\JobFailed;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Console\Scheduling\Schedule;
 use Illuminate\Contracts\Debug\ExceptionHandler;
 use Notify\LaravelCustomLog\Mail\ExceptionEmail;
-use Notify\LaravelCustomLog\Jobs\SendReportEmailJob;
-use Notify\LaravelCustomLog\Jobs\SendExceptionEmailJob;
 use Notify\LaravelCustomLog\Mail\ReportEmail;
 
 class LaravelCustomLogServiceProvider extends ServiceProvider
@@ -44,10 +41,12 @@ class LaravelCustomLogServiceProvider extends ServiceProvider
         }
         if ($this->app->runningInConsole()) {
             $this->publishRequiredFiles();
-           /* commands section */
             $this->app->booted(function () {
-                $this->sendEmailReport();
-                $this->sendEmailsToDeveloper();
+                /* commands section */
+                if (config('custom-log.custom_log_mysql_enable')) {
+                    $this->sendEmailReport();
+                    $this->sendEmailsToDeveloper();
+                }
             });
         }
         $this->loadRoutesFrom(__DIR__ . '/routes/web.php');
@@ -73,7 +72,6 @@ class LaravelCustomLogServiceProvider extends ServiceProvider
                         }
                     }
                 })->everyMinute();
-                // $schedule->job(new SendExceptionEmailJob())->everyMinute();
             }
         }
     }

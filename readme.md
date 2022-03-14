@@ -5,6 +5,15 @@ Laravel failsafe custom logging & notification library which send notification t
 - Send daily report to clients
 - provide a view to see all exceptions 
 
+## Required package in case of AWS SES
+`composer require aws/aws-sdk-php`
+## Required .env Constants
+copy and paste these constants into .env file
+
+- CUSTOM_LOG_MYSQL_ENABLE=false - turn it true to send notification
+- DB_LOG_CONNECTION=mysql
+- DB_LOG_TABLE=logs
+- CUSTOM_LOG_FAILSAFE=true
 
 
 ## Installation using private repo

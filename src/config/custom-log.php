@@ -1,9 +1,9 @@
 <?php
 
 return [
-    'dev-mode' => true,
+    'dev-mode' => false,
     'failsafe' => env('CUSTOM_LOG_FAILSAFE', true),
-    'custom_log_mysql_enable' => env('CUSTOM_LOG_MYSQL_ENABLE', true),
+    'custom_log_mysql_enable' => env('CUSTOM_LOG_MYSQL_ENABLE', false),
     'stacktrace' => env('CUSTOM_LOG_STACKTRACE', false),
     /*
     Default will be daily but you can pass parameters here according to your need
@@ -20,9 +20,9 @@ return [
     'command' => '',
     /* email related seeting */
     'emails' => [
-        'subject' => ' MSWA gestalt Integration: Error Report',
-        'message' => 'Hi,I trust you are well.  Here is the report of exceptions for '.date("Y-m-d").'.',
-        'cc'=>['tshahzad@computan.net']
+        'subject' => 'Error Report',
+        'message' => 'Hi',
+        'cc' => ['tshahzad@computan.net']
     ],
     /* enlist all comma seprated email for PM and other to send daily report */
     'pm-emails' => ['tshahzad@computan.net'],

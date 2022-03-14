@@ -22,13 +22,12 @@ class ExceptionEmail extends Mailable
 
     public function build()
     {
+        $email= $this->view('CustomLog::emails.exception')->subject(config('custom-log.emails.subject'))
+        ->from(config('mail.from.address'))->with(['exception'=>$this->exception]);
         if (!empty(config('custom-log.emails.cc'))) {
-            return $this->view('CustomLog::emails.exception')->subject(config('custom-log.emails.subject'))
-            ->from(config('mail.from.address'))->with(['exception'=>$this->exception])->cc(config('custom-log.emails.cc'));
-        }else{
-            return $this->view('CustomLog::emails.exception')->subject(config('custom-log.emails.subject'))
-            ->from(config('mail.from.address'))->with(['exception'=>$this->exception]);
+            $email->cc(config('custom-log.emails.cc'));
         }
+        return $email;
         
 
     }
