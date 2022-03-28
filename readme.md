@@ -16,20 +16,6 @@ copy and paste these constants into .env file
 - CUSTOM_LOG_FAILSAFE=true
 
 
-## Installation using private repo
-
-`{
-    "require": {
-        "vendor/my-private-repo": "dev-master"
-    },
-    "repositories": [
-        {
-            "type": "vcs",
-            "url":  "git@bitbucket.org:vendor/my-private-repo.git"
-        }
-    ]
-}`
-The only requirement is the installation of SSH keys for a git client.
 
 [Please see docs](https://getcomposer.org/doc/04-schema.md#repositories)
 ## Installation using packagist
