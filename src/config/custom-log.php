@@ -5,6 +5,7 @@ return [
     'failsafe' => env('CUSTOM_LOG_FAILSAFE', true),
     'custom_log_mysql_enable' => env('CUSTOM_LOG_MYSQL_ENABLE', false),
     'stacktrace' => env('CUSTOM_LOG_STACKTRACE', false),
+    'override_exception_handler'=>true,
     /*
     Default will be daily but you can pass parameters here according to your need
      * * * * *  command to execute

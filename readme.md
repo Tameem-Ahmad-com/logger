@@ -4,7 +4,22 @@ Laravel failsafe custom logging & notification library which send notification t
 - Send notification to developer on each exceptions 
 - Send daily report to clients
 - provide a view to see all exceptions 
+## Please note
+This package override laravel Exception Handler and you will not able to do anything inside Handler.php to avoid this use below steps.
 
+- open `config/custom-log.php` & `override_exception_handler=false` if you want to handle the exceptions by yourself and put this code into the register method.
+
+```php
+<?php
+$this->reportable(function (Throwable $e) {
+          // your own code 
+
+            \Notify\LaravelCustomLog\Notifications\Notifications::error('exceptions', "{$e->getMessage()}", $e->getTrace());
+         });
+
+```
+
+- by default this package will override the exception handler
 ## Required package in case of AWS SES
 `composer require aws/aws-sdk-php`
 ## Required .env Constants

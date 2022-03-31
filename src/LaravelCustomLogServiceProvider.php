@@ -30,10 +30,13 @@ class LaravelCustomLogServiceProvider extends ServiceProvider
         if (config('custom-log.custom_log_mysql_enable')) {
 
             /* Binding package exception into laravel ExceptionHandler interface*/
-            $this->app->bind(
-                ExceptionHandler::class,
-                Handler::class
-            );
+            if (config('custom-log.override_exception_handler')) {
+                $this->app->bind(
+                    ExceptionHandler::class,
+                    Handler::class
+                );
+            }
+
             /* getting fialed job exception */
             Queue::failing(function (JobFailed $event) {
                 Notifications::error('job', $event->exception->getMessage(), $event->exception->getTrace());
