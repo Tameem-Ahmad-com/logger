@@ -216,7 +216,8 @@ isAvailableForNewContent: true
                             </tr>
                         </thead>
                         <tbody>
-                            @php$i = 1;
+                            @php 
+                            $i = 1;
                             @endphp
                             @foreach ($exceptions as $exception)
                                 <tr>
