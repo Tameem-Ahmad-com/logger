@@ -7,10 +7,8 @@ isAvailableForNewContent: true
 
 <head>
     <title>
-        {% if content.html_title and content.html_title != '' %}{{ content . html_title }}{% else %}{{ content . body . subject }}{% endif %}
+       Error Report
     </title>
-    {% if content.meta_description %}
-    <meta name="description" content="{{ content . meta_description }}" />{% endif %}
     <style type="text/css" id="hs-inline-css">
         /*<![CDATA[*/
         /* everything in this style tag will be inlined onto matching elements */
@@ -179,10 +177,7 @@ isAvailableForNewContent: true
 
 <body>
     <!-- Preview text (text which appears right after subject in certain email clients) -->
-    <div id="preview_text" style="display:none!important">
-        {% text "preview_text" label="Preview Text <span class=help-text>This will be used as the preview text that displays in some email clients</span>", value="", no_wrapper=True %}
-    </div>
-    <div
+     <div
         style="display: none; font-size: 1px; color: #fefefe; line-height: 1px; font-family: 'Lato', Helvetica, Arial, sans-serif; max-height: 0px; max-width: 0px; opacity: 0; overflow: hidden;">
         This email is provide you reporting about integration projects status.
     </div>
