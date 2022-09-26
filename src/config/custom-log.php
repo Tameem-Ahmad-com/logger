@@ -34,7 +34,7 @@ return [
         'enable' => env('CUSTOM_LOG_CONSOLE_ENABLE', false),
     ],
     'file' => [
-        'enable' => env('CUSTOM_LOG_FILE_ENABLE', true),
+        'enable' => env('CUSTOM_LOG_FILE_ENABLE',false),
     ],
     'mysql' => [
         'enable' => env('CUSTOM_LOG_MYSQL_ENABLE', false),
