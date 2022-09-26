@@ -80,17 +80,21 @@ class LaravelCustomLogServiceProvider extends ServiceProvider
     }
     protected function sendEmailReport()
     {
-        if (Notifications::getDailyCount() > 0) {
-            $schedule = $this->app->make(Schedule::class);
-            if (!empty(config('custom-log.command'))) {
+
+        $schedule = $this->app->make(Schedule::class);
+        if (!empty(config('custom-log.command'))) {
+            if (Notifications::getDailyCount() > 0) {
                 $schedule->call(function () {
                     Mail::to(config('custom-log.pm-emails'))->send(new ReportEmail());
                 })->cron(config('custom-log.command'));
-            } else {
-                $schedule->call(function () {
-                    Mail::to(config('custom-log.pm-emails'))->send(new ReportEmail());
-                })->dailyAt('10:00');
             }
+        } else {
+
+            $schedule->call(function () {
+                if (Notifications::getDailyCount() > 0) {
+                    Mail::to(config('custom-log.pm-emails'))->send(new ReportEmail());
+                }
+            })->dailyAt('10:00');
         }
     }
 
