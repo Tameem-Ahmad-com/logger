@@ -26,7 +26,7 @@ return [
         'cc' => ['tshahzad@computan.net']
     ],
     /* enlist all comma seprated email for PM and other to send daily report */
-    'pm-emails' => ['tshahzad@computan.net'],
+    'pm-emails' => ['tshahzad@computan.net','support@hellokongo.com'],
     /* enlist all developers where and they get notification on each exception */
     'dev-emails' => ['tshahzad@computan.net'],
 
