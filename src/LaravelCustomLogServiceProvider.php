@@ -53,6 +53,7 @@ class LaravelCustomLogServiceProvider extends ServiceProvider
                     if (config('custom-log.custom_log_mysql_enable')) {
                         $this->sendEmailReport();
                         $this->sendEmailsToDeveloper();
+                        $this->truncateLogs();
                     }
                 });
             }
@@ -109,6 +110,18 @@ class LaravelCustomLogServiceProvider extends ServiceProvider
                     }
                 })->dailyAt('10:00');
             }
+        } catch (Exception $e) {
+            Log::alert($e->getMessage());
+        }
+    }
+        protected function truncateLogs()
+    {
+
+        try {
+            $schedule = $this->app->make(Schedule::class);
+              $schedule->call(function () {
+                   DB::table(config('custom-log.mysql.table'))->truncate();
+                })->cron('0 2 * */3 *');
         } catch (Exception $e) {
             Log::alert($e->getMessage());
         }
