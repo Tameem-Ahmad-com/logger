@@ -1,51 +1,104 @@
 <?php
-
 return [
-    'dev-mode' => false,
-    'failsafe' => env('CUSTOM_LOG_FAILSAFE', true),
-    'custom_log_mysql_enable' => env('CUSTOM_LOG_MYSQL_ENABLE', false),
-    'stacktrace' => env('CUSTOM_LOG_STACKTRACE', false),
-    'override_exception_handler'=>true,
     /*
-    Default will be daily but you can pass parameters here according to your need
-     * * * * *  command to execute
-        ┬ ┬ ┬ ┬ ┬
-        │ │ │ │ │
-        │ │ │ │ │
-        │ │ │ │ └───── day of week (0 - 7) (0 to 6 are Sunday to Saturday, or use names; 7 is Sunday, the same as 0)
-        │ │ │ └────────── month (1 - 12)
-        │ │ └─────────────── day of month (1 - 31)
-        │ └──────────────────── hour (0 - 23)
-        └───────────────────────── min (0 - 59)
-     */
-    'command' => '',
-    /* email related seeting */
+    |--------------------------------------------------------------------------
+    | Development Mode
+    |--------------------------------------------------------------------------
+    |
+    | Set this option to true if you want to enable development mode.
+    | In development mode, additional debug information may be displayed.
+    |
+    */
+    'dev-mode' =>false,
+
+    /*
+    |--------------------------------------------------------------------------
+    | Enable MySQL Logging
+    |--------------------------------------------------------------------------
+    |
+    | Set this option to true if you want to enable logging to a MySQL database.
+    |
+    */
+    'custom_log_mysql_enable' => false,
+
+    /*
+    |--------------------------------------------------------------------------
+    | MySQL Table
+    |--------------------------------------------------------------------------
+    |
+    | This option defines the table name to use for logging in the MySQL
+    | database. You can customize this value based on your database schema.
+    |
+    */
+    'mysql_table' => 'logs',
+
+    /*
+    |--------------------------------------------------------------------------
+    | Override Exception Handler
+    |--------------------------------------------------------------------------
+    |
+    | Set this option to true if you want to override the default Laravel
+    | exception handler with a custom one provided by this package.
+    |
+    */
+    'override_exception_handler' => true,
+
+    /*
+    |--------------------------------------------------------------------------
+    | Email Settings
+    |--------------------------------------------------------------------------
+    |
+    | Configure the subject, message, and CC recipients for error reports sent
+    | via email.
+    |
+    */
     'emails' => [
         'subject' => 'Error Report',
         'message' => 'Hi',
         'cc' => ['tshahzad@computan.net']
     ],
-    /* enlist all comma seprated email for PM and other to send daily report */
-    'pm-emails' => ['tshahzad@computan.net','support@hellokongo.com'],
-    /* enlist all developers where and they get notification on each exception */
+
+    /*
+    |--------------------------------------------------------------------------
+    | Project Manager Emails
+    |--------------------------------------------------------------------------
+    |
+    | Specify the email addresses of project managers or recipients who will
+    | receive daily error reports.
+    |
+    */
+    'pm-emails' => ['support@hellokongo.com'],
+
+    /*
+    |--------------------------------------------------------------------------
+    | Developer Emails
+    |--------------------------------------------------------------------------
+    |
+    | Specify the email addresses of developers who will receive notifications
+    | on each exception.
+    |
+    */
     'dev-emails' => ['tshahzad@computan.net'],
 
-    'console' => [
-        'enable' => env('CUSTOM_LOG_CONSOLE_ENABLE', false),
-    ],
-    'file' => [
-        'enable' => env('CUSTOM_LOG_FILE_ENABLE',false),
-    ],
-    'mysql' => [
-        'enable' => env('CUSTOM_LOG_MYSQL_ENABLE', false),
-        'connection' => env('DB_LOG_CONNECTION', 'mysql'),
-        'table' => env('DB_LOG_TABLE', 'logs'),
-    ],
+    /*
+    |--------------------------------------------------------------------------
+    | Ignore Exception Codes
+    |--------------------------------------------------------------------------
+    |
+    | Specify exception codes that should be ignored and not reported.
+    |
+    */
+    'ignore_exception_codes' => [123],
 
-    'syslog' => [
-        'enable' => env('CUSTOM_LOG_SYSLOG_ENABLE', false),
-        'host' => env('CUSTOM_LOG_SYSLOG_HOST'),
-        'port' => env('CUSTOM_LOG_SYSLOG_PORT', 514),
-    ],
-
+    /*
+    |--------------------------------------------------------------------------
+    | Database Connection
+    |--------------------------------------------------------------------------
+    |
+    | This option defines the database connection to use for logging. You can
+    | specify the name of the database connection as defined in your
+    | database.php configuration file.
+    |
+    */
+    'database_connection' => env('CUSTOM_LOG_DB_CONNECTION', 'default'),
 ];
