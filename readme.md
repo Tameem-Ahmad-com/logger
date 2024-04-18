@@ -10,19 +10,44 @@ This package override laravel Exception Handler and you will not able to do anyt
 - open `config/custom-log.php` & `override_exception_handler=false` if you want to handle the exceptions by yourself and put this code into the register method.
 
 ```php
-<?php
-$this->reportable(function (Throwable $e) {
-          // your own code 
+ /**
+     * Register the exception handling callbacks for the application.
+     *
+     * @return void
+     */
+    public function register()
+    {
+        $this->reportable(function (Throwable $e) {
+            if ($e instanceof QueryException && $this->isDeadlockException($e)) {
+                // Handle deadlock exception
+                Notifications::error('deadlocks', 'Deadlock found when trying to get lock', $e->getTrace());
+            } elseif ($e instanceof MaxAttemptsExceededException) {
+                // Handle max attempts exceeded exception
+                Notifications::error('queue', 'Max attempts exceeded for job execution', $e->getTrace());
+            } else {
+                // Log other exceptions using the default logic
+                Notifications::error('exceptions', $e->getMessage(), $e->getTrace());
+            }
+        });
+    }
 
-            \Notify\LaravelCustomLog\Notifications\Notifications::error('exceptions', "{$e->getMessage()}", $e->getTrace());
-         });
+    /**
+     * Check if the exception is a deadlock exception.
+     *
+     * @param \Illuminate\Database\QueryException $e
+     * @return bool
+     */
+    protected function isDeadlockException(QueryException $e)
+    {
+        return $e->getCode() === '40001';
+    }
 
 ```
 
 - by default this package will override the exception handler
 ## Required package in case of AWS SES
 `composer require aws/aws-sdk-php`
-## Update config.php 
+## custom-log.php example listed below
 
 
 ```php
@@ -150,12 +175,5 @@ Publish MySQL Migration
 `php artisan vendor:publish --provider="Notify\\LaravelCustomLog\\LaravelCustomLogServiceProvider" --tag=migration`
 
 
-## Basic Usage
-
-Add this package into your project & edit config file which comes with this package
-
-## Replace Laravel log (Laravel <= 5.5)
-
-Edit your `bootstrap/app.php`, add this before returning the application
 
 # In simple you just need paste the above code in config.php and update emails nothing else is required
