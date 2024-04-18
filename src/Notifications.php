@@ -19,6 +19,7 @@ use Illuminate\Database\Eloquent\Collection;
 use Monolog\Handler\WhatFailureGroupHandler;
 
 
+
 class Notifications
 {
     private static $channels = [];
@@ -247,7 +248,7 @@ class Notifications
 
         return DB::table(config('custom-log.mysql.table'))->where('channel', 'job')
             ->whereDate('created_at', Carbon::today())->count();
-    }
+    } 
     public static function getDailyCount()
     {
 

@@ -2,7 +2,7 @@
 
 namespace Notify\LaravelCustomLog;
 
-
+use Exception;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Queue;
@@ -12,6 +12,7 @@ use Illuminate\Console\Scheduling\Schedule;
 use Illuminate\Contracts\Debug\ExceptionHandler;
 use Notify\LaravelCustomLog\Mail\ExceptionEmail;
 use Notify\LaravelCustomLog\Mail\ReportEmail;
+use Illuminate\Support\Facades\Log;
 
 class LaravelCustomLogServiceProvider extends ServiceProvider
 {
@@ -27,55 +28,67 @@ class LaravelCustomLogServiceProvider extends ServiceProvider
     public function boot()
     {
 
-        if (config('custom-log.custom_log_mysql_enable')) {
+        try {
 
-            /* Binding package exception into laravel ExceptionHandler interface*/
-            if (config('custom-log.override_exception_handler')) {
-                $this->app->bind(
-                    ExceptionHandler::class,
-                    Handler::class
-                );
+            if (config('custom-log.custom_log_mysql_enable')) {
+
+                /* Binding package exception into laravel ExceptionHandler interface*/
+                if (config('custom-log.override_exception_handler')) {
+                    $this->app->bind(
+                        ExceptionHandler::class,
+                        Handler::class
+                    );
+                }
+
+                /* getting fialed job exception */
+                Queue::failing(function (JobFailed $event) {
+                    Notifications::error('job', $event->exception->getMessage(), $event->exception->getTrace());
+                });
             }
 
-            /* getting fialed job exception */
-            Queue::failing(function (JobFailed $event) {
-                Notifications::error('job', $event->exception->getMessage(), $event->exception->getTrace());
-            });
+            if ($this->app->runningInConsole()) {
+                $this->publishRequiredFiles();
+                $this->app->booted(function () {
+                    /* commands section */
+                    if (config('custom-log.custom_log_mysql_enable')) {
+                        $this->sendEmailReport();
+                        $this->sendEmailsToDeveloper();
+                        $this->truncateLogs();
+                    }
+                });
+            }
+            $this->loadRoutesFrom(__DIR__ . '/routes/web.php');
+            $this->loadViewsFrom(__DIR__ . '/resources/views', 'CustomLog');
+        } catch (Exception $e) {
+            Log::alert($e->getMessage());
         }
-        if ($this->app->runningInConsole()) {
-            $this->publishRequiredFiles();
-            $this->app->booted(function () {
-                /* commands section */
-                if (config('custom-log.custom_log_mysql_enable')) {
-                    $this->sendEmailReport();
-                    $this->sendEmailsToDeveloper();
-                }
-            });
-        }
-        $this->loadRoutesFrom(__DIR__ . '/routes/web.php');
-        $this->loadViewsFrom(__DIR__ . '/resources/views', 'CustomLog');
     }
 
     protected function sendEmailsToDeveloper()
     {
-        if (config('custom-log.dev-mode')) {
-            if (Notifications::getDailyCount() > 0) {
-                $schedule = $this->app->make(Schedule::class);
-                $schedule->call(function () {
-                    $errors = DB::table(config('custom-log.mysql.table'))->where('is_email_sent', 0)->get();
-                    if (!empty($errors)) {
-                        foreach ($errors as $error) {
-                            Mail::to(config('custom-log.dev-emails'))->send(new ExceptionEmail($error));
-                            $record = DB::table(config('custom-log.mysql.table'))->find($error->id);
-                            if (!is_null($record)) {
-                                DB::table(config('custom-log.mysql.table'))->where('id', $error->id)->update([
-                                    'is_email_sent' => 1
-                                ]);
+        try {
+
+            if (config('custom-log.dev-mode')) {
+                if (Notifications::getDailyCount() > 0) {
+                    $schedule = $this->app->make(Schedule::class);
+                    $schedule->call(function () {
+                        $errors = DB::table(config('custom-log.mysql.table'))->where('is_email_sent', 0)->get();
+                        if (!empty($errors)) {
+                            foreach ($errors as $error) {
+                                Mail::to(config('custom-log.dev-emails'))->send(new ExceptionEmail($error));
+                                $record = DB::table(config('custom-log.mysql.table'))->find($error->id);
+                                if (!is_null($record)) {
+                                    DB::table(config('custom-log.mysql.table'))->where('id', $error->id)->update([
+                                        'is_email_sent' => 1
+                                    ]);
+                                }
                             }
                         }
-                    }
-                })->everyMinute();
+                    })->everyMinute();
+                }
             }
+        } catch (Exception $e) {
+            Log::alert($e->getMessage());
         }
     }
     protected function sendEmailReport()

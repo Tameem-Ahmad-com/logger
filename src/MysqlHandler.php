@@ -1,10 +1,13 @@
 <?php
+
 namespace Notify\LaravelCustomLog;
 
 use DB;
+use Exception;
 use Illuminate\Support\Facades\Auth;
 use Monolog\Logger;
 use Monolog\Handler\AbstractProcessingHandler;
+use Illuminate\Support\Facades\Log;
 
 class MysqlHandler extends AbstractProcessingHandler
 {
@@ -19,21 +22,26 @@ class MysqlHandler extends AbstractProcessingHandler
         parent::__construct($level, $bubble);
     }
 
-    protected function write(array $record):void
+    protected function write(array $record): void
     {
-        $data = [
-            'instance'    => gethostname(),
-            'message'     => $record['message'],
-            'channel'     => $record['channel'],
-            'level'       => $record['level'],
-            'level_name'  => $record['level_name'],
-            'context'     => json_encode($record['context']),
-            'remote_addr' => isset($_SERVER['REMOTE_ADDR'])     ? $_SERVER['REMOTE_ADDR'] : null,
-            'user_agent'  => isset($_SERVER['HTTP_USER_AGENT']) ? $_SERVER['HTTP_USER_AGENT']  : null,
-            'created_by'  => Auth::id() > 0 ? Auth::id() : null,
-            'created_at'  => $record['datetime']->format('Y-m-d H:i:s')
-        ];
+        try {
 
-        DB::connection($this->connection)->table($this->table)->insert($data);
+            $data = [
+                'instance'    => gethostname(),
+                'message'     => $record['message'],
+                'channel'     => $record['channel'],
+                'level'       => $record['level'],
+                'level_name'  => $record['level_name'],
+                'context'     => json_encode($record['context']),
+                'remote_addr' => isset($_SERVER['REMOTE_ADDR'])     ? $_SERVER['REMOTE_ADDR'] : null,
+                'user_agent'  => isset($_SERVER['HTTP_USER_AGENT']) ? $_SERVER['HTTP_USER_AGENT']  : null,
+                'created_by'  => Auth::id() > 0 ? Auth::id() : null,
+                'created_at'  => $record['datetime']->format('Y-m-d H:i:s')
+            ];
+
+            DB::connection($this->connection)->table($this->table)->insert($data);
+        } catch (Exception $e) {
+            Log::alert($e->getMessage());
+        }
     }
 }
