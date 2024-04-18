@@ -22,24 +22,124 @@ $this->reportable(function (Throwable $e) {
 - by default this package will override the exception handler
 ## Required package in case of AWS SES
 `composer require aws/aws-sdk-php`
-## Required .env Constants
-copy and paste these constants into .env file
+## Update config.php 
 
-- CUSTOM_LOG_MYSQL_ENABLE=false - turn it true to send notification
-- DB_LOG_CONNECTION=mysql
-- DB_LOG_TABLE=logs
-- CUSTOM_LOG_FAILSAFE=true
 
+```php
+<?php
+return [
+    /*
+    |--------------------------------------------------------------------------
+    | Development Mode
+    |--------------------------------------------------------------------------
+    |
+    | Set this option to true if you want to enable development mode.
+    | In development mode, additional debug information may be displayed.
+    |
+    */
+    'dev-mode' =>false,
+
+    /*
+    |--------------------------------------------------------------------------
+    | Enable MySQL Logging
+    |--------------------------------------------------------------------------
+    |
+    | Set this option to true if you want to enable logging to a MySQL database.
+    |
+    */
+    'custom_log_mysql_enable' => true,
+
+    /*
+    |--------------------------------------------------------------------------
+    | MySQL Table
+    |--------------------------------------------------------------------------
+    |
+    | This option defines the table name to use for logging in the MySQL
+    | database. You can customize this value based on your database schema.
+    |
+    */
+    'mysql_table' => 'logs',
+
+    /*
+    |--------------------------------------------------------------------------
+    | Override Exception Handler
+    |--------------------------------------------------------------------------
+    |
+    | Set this option to true if you want to override the default Laravel
+    | exception handler with a custom one provided by this package.
+    |
+    */
+    'override_exception_handler' => true,
+
+    /*
+    |--------------------------------------------------------------------------
+    | Email Settings
+    |--------------------------------------------------------------------------
+    |
+    | Configure the subject, message, and CC recipients for error reports sent
+    | via email.
+    |
+    */
+    'emails' => [
+        'subject' => 'Error Report',
+        'message' => 'Hi',
+        'cc' => ['youremail@computan.net']
+    ],
+
+    /*
+    |--------------------------------------------------------------------------
+    | Project Manager Emails
+    |--------------------------------------------------------------------------
+    |
+    | Specify the email addresses of project managers or recipients who will
+    | receive daily error reports.
+    |
+    */
+    'pm-emails' => ['your-pm-email@computan.net'],
+
+    /*
+    |--------------------------------------------------------------------------
+    | Developer Emails
+    |--------------------------------------------------------------------------
+    |
+    | Specify the email addresses of developers who will receive notifications
+    | on each exception.
+    |
+    */
+    'dev-emails' => ['youremail@computan.net'],
+
+    /*
+    |--------------------------------------------------------------------------
+    | Ignore Exception Codes
+    |--------------------------------------------------------------------------
+    |
+    | Specify exception codes that should be ignored and not reported.
+    |
+    */
+    'ignore_exception_codes' => [123,40001],
+
+    /*
+    |--------------------------------------------------------------------------
+    | Database Connection
+    |--------------------------------------------------------------------------
+    |
+    | This option defines the database connection to use for logging. You can
+    | specify the name of the database connection as defined in your
+    | database.php configuration file.
+    |
+    */
+    'database_connection' => env('CUSTOM_LOG_DB_CONNECTION', 'default'),
+];
+
+
+```
 
 
 [Please see docs](https://getcomposer.org/doc/04-schema.md#repositories)
 ## Installation using packagist
 
-`composer require notify/notification`
+`composer require notify/notification:"dev-main"`
 
-On Laravel 5.4 and below, add the ServiceProvider to your `config/app.php`
-
-`Notify\LaravelCustomLog\LaravelCustomLogServiceProvider::class`
 
 Publish Config
 
@@ -48,49 +148,6 @@ Publish Config
 Publish MySQL Migration
 
 `php artisan vendor:publish --provider="Notify\\LaravelCustomLog\\LaravelCustomLogServiceProvider" --tag=migration`
-## Emails
-Edit config  custom-log.php email key , add comma seprated emails and app will notify to them 
-```
- 'pm-emails'=>['test@gmail.com','test1@gmail.com'],
-```
-## Developer Mode
-```
- 'dev-mode' => true,
- 'dev-emails'=>['test@gmail.com','test1@gmail.com'],
-```
-## Customizeable emails & commands 
-```
-  'command' => '*****',
-    /* email related seeting */
-    'emails' => [
-        'subject' => ' MSWA gestalt Integration: Error Report',
-        'message' => 'Hi,I trust you are well.  Here is the report of exceptions for '.date("Y-m-d").'.',
-    ],
-
-```
- * * * * *  command to execute
-        ┬ ┬ ┬ ┬ ┬
-        │ │ │ │ │
-        │ │ │ │ │
-        │ │ │ │ └───── day of week (0 - 7) (0 to 6 are Sunday to Saturday, or use names; 7 is Sunday, the same as 0)
-        │ │ │ └────────── month (1 - 12)
-        │ │ └─────────────── day of month (1 - 31)
-        │ └──────────────────── hour (0 - 23)
-        └───────────────────────── min (0 - 59)
-
-## Choose Log Destinations
-
-Add config into `.env`, you may enable multiple destinations
-
-### File
-
-- CUSTOM_LOG_FILE_ENABLE (true|false, default=true)
-
-### MySQL
-
-- CUSTOM_LOG_MYSQL_ENABLE (true|false, default=false)
-- DB_LOG_CONNECTION (connection defined in database.php, default=mysql)
-- DB_LOG_TABLE (default=logs)
 
 
 ## Basic Usage
@@ -101,18 +158,4 @@ Add this package into your project & edit config file which comes with this pack
 
 Edit your `bootstrap/app.php`, add this before returning the application
 
-```
-$app->configureMonologUsing(function ($monolog) {
-    $monolog->pushHandler(Notify\LaravelCustomLog\LaravelCustomLogServiceProvider::getSystemHandler());
-});
-```
-## Register as Laravel logger channel (Laravel >= 5.6)
-
-Edit your `config/logging.php`, add this to the `channels` array
-
-```
-'customlog' => [
-    'driver' => 'custom',
-    'via' => Notify\LaravelCustomLog\Notifications::class,
-]
-```
+# In simple you just need paste the above code in config.php and update emails nothing else is required
