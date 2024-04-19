@@ -31,7 +31,7 @@ class LaravelCustomLogServiceProvider extends ServiceProvider
         try {
             // Register exception handling
             if (config('custom-log.custom_log_mysql_enable')) {
-               
+
                 // Bind package exception handler if configured
                 if (config('custom-log.override_exception_handler')) {
                     $this->app->bind(ExceptionHandler::class, Handler::class);
@@ -45,17 +45,18 @@ class LaravelCustomLogServiceProvider extends ServiceProvider
 
             // Perform actions only in console environment
             if ($this->app->runningInConsole()) {
-               
+
                 // Publish required files
                 $this->publishRequiredFiles();
-               
+
                 // Schedule tasks for sending reports and developer emails
                 $this->app->booted(function () {
-                 
+
                     if (config('custom-log.custom_log_mysql_enable')) {
-                        
+
                         $this->sendEmailReport();
                         $this->sendEmailsToDeveloper();
+                        $this->clearLogs();
                     }
                 });
             }
@@ -73,20 +74,20 @@ class LaravelCustomLogServiceProvider extends ServiceProvider
     protected function sendEmailsToDeveloper()
     {
         try {
-           
+
             if (config('custom-log.dev-mode')) {
                 if (Notifications::getDailyCount() > 0) {
-                  
+
                     $schedule = $this->app->make(Schedule::class);
                     $schedule->call(function () {
-                        $errors = DB::table(config('custom-log.mysql_table','logs'))->where('is_email_sent', 0)->get();
-                       
+                        $errors = DB::table(config('custom-log.mysql_table', 'logs'))->where('is_email_sent', 0)->get();
+
                         if (!empty($errors)) {
                             foreach ($errors as $error) {
                                 Mail::to(config('custom-log.dev-emails'))->send(new ExceptionEmail($error));
-                                $record = DB::table(config('custom-log.mysql_table','logs'))->find($error->id);
+                                $record = DB::table(config('custom-log.mysql_table', 'logs'))->find($error->id);
                                 if (!is_null($record)) {
-                                    DB::table(config('custom-log.mysql_table','logs'))->where('id', $error->id)->update([
+                                    DB::table(config('custom-log.mysql_table', 'logs'))->where('id', $error->id)->update([
                                         'is_email_sent' => 1
                                     ]);
                                 }
@@ -106,18 +107,39 @@ class LaravelCustomLogServiceProvider extends ServiceProvider
     {
         try {
             $schedule = $this->app->make(Schedule::class);
-           
-                $schedule->call(function () {
-                    if (Notifications::getDailyCount() > 0) {
-                        Mail::to(config('custom-log.pm-emails'))->send(new ReportEmail());
-                    }
-                })->dailyAt('10:00');
-            
+
+            $schedule->call(function () {
+                if (Notifications::getDailyCount() > 0) {
+                    Mail::to(config('custom-log.pm-emails'))->send(new ReportEmail());
+                }
+            })->dailyAt('10:00');
         } catch (Exception $e) {
             // Log any exceptions that occur during email sending
             Log::alert($e->getMessage());
         }
     }
+
+    protected function clearLogs()
+    {
+        try {
+            $schedule = $this->app->make(Schedule::class);
+
+            $schedule->call(function () {
+            // Disable foreign key checks temporarily
+            DB::statement('SET FOREIGN_KEY_CHECKS=0;');
+
+            // Clear the logs table
+            DB::table(config('custom-log.mysql_table'))->truncate();
+
+            // Re-enable foreign key checks
+            DB::statement('SET FOREIGN_KEY_CHECKS=1;');
+            })->monthlyOn(28, '23:59');
+        } catch (Exception $e) {
+            // Log any errors
+            Log::error('Error occurred while clearing logs: ' . $e->getMessage());
+        }
+    }
+
 
     // Publishes required configuration and migration files
     protected function publishRequiredFiles()
