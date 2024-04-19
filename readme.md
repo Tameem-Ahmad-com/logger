@@ -52,6 +52,7 @@ This package override laravel Exception Handler and you will not able to do anyt
 
 ```php
 <?php
+
 return [
     /*
     |--------------------------------------------------------------------------
@@ -62,7 +63,7 @@ return [
     | In development mode, additional debug information may be displayed.
     |
     */
-    'dev-mode' =>false,
+    'dev-mode' => false,
 
     /*
     |--------------------------------------------------------------------------
@@ -72,7 +73,7 @@ return [
     | Set this option to true if you want to enable logging to a MySQL database.
     |
     */
-    'custom_log_mysql_enable' => true,
+    'custom_log_mysql_enable' => false,
 
     /*
     |--------------------------------------------------------------------------
@@ -108,7 +109,7 @@ return [
     'emails' => [
         'subject' => 'Error Report',
         'message' => 'Hi',
-        'cc' => ['youremail@computan.net']
+        'cc' => ['tshahzad@computan.net']
     ],
 
     /*
@@ -120,7 +121,7 @@ return [
     | receive daily error reports.
     |
     */
-    'pm-emails' => ['your-pm-email@computan.net'],
+    'pm-emails' => ['support@hellokongo.com'],
 
     /*
     |--------------------------------------------------------------------------
@@ -131,17 +132,21 @@ return [
     | on each exception.
     |
     */
-    'dev-emails' => ['youremail@computan.net'],
+    'dev-emails' => ['tshahzad@computan.net'],
 
     /*
     |--------------------------------------------------------------------------
-    | Ignore Exception Codes
+    | Ignore Exceptions
     |--------------------------------------------------------------------------
     |
-    | Specify exception codes that should be ignored and not reported.
+    | Specify exception classes and error codes that should be ignored and not reported.
+    | Add the fully qualified class name for exception classes, and the corresponding error codes.
     |
     */
-    'ignore_exception_codes' => [123,40001],
+    'ignore_exceptions' => [
+        'Illuminate\Database\QueryException' => [123, 40001], // Example: 'ExceptionClassName' => [123, 40001]
+        // Add more exceptions as needed
+    ],
 
     /*
     |--------------------------------------------------------------------------
@@ -155,6 +160,7 @@ return [
     */
     'database_connection' => env('CUSTOM_LOG_DB_CONNECTION', 'default'),
 ];
+
 
 
 ```
