@@ -44,23 +44,32 @@ class Handler extends ExceptionHandler
      */
     private function shouldIgnoreException(Throwable $e): bool
     {
-        if ($e instanceof QueryException && $this->isDeadlockException($e)) {
-            return true;
-        }
+        $ignoreExceptions = config('custom-log.ignore_exceptions', []);
 
-        // Add more conditions here to ignore specific exceptions based on your requirements
+        foreach ($ignoreExceptions as $class => $codes) {
+            if ($e instanceof $class && $this->isIgnoredExceptionCode($e, $codes)) {
+                return true;
+            }
+        }
 
         return false;
     }
 
     /**
-     * Determine if the exception is a deadlock exception.
+     * Determine if the exception code should be ignored.
      *
-     * @param  \Illuminate\Database\QueryException  $e
+     * @param  \Throwable  $e
+     * @param  array  $codes
      * @return bool
      */
-    private function isDeadlockException(QueryException $e): bool
+    private function isIgnoredExceptionCode(Throwable $e, array $codes): bool
     {
-        return in_array($e->getCode(), config('custom-log.ignore_exception_codes', []));
+        if ($e instanceof QueryException && in_array($e->getCode(), $codes)) {
+            return true;
+        }
+
+        // Add more conditions here to ignore specific exception codes based on your requirements
+
+        return false;
     }
 }

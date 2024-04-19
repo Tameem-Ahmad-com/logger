@@ -1,4 +1,5 @@
 <?php
+
 return [
     /*
     |--------------------------------------------------------------------------
@@ -9,7 +10,7 @@ return [
     | In development mode, additional debug information may be displayed.
     |
     */
-    'dev-mode' =>false,
+    'dev-mode' => false,
 
     /*
     |--------------------------------------------------------------------------
@@ -82,13 +83,17 @@ return [
 
     /*
     |--------------------------------------------------------------------------
-    | Ignore Exception Codes
+    | Ignore Exceptions
     |--------------------------------------------------------------------------
     |
-    | Specify exception codes that should be ignored and not reported.
+    | Specify exception classes and error codes that should be ignored and not reported.
+    | Add the fully qualified class name for exception classes, and the corresponding error codes.
     |
     */
-    'ignore_exception_codes' => [123],
+    'ignore_exceptions' => [
+        'Illuminate\Database\QueryException' => [123, 40001], // Example: 'ExceptionClassName' => [123, 40001]
+        // Add more exceptions as needed
+    ],
 
     /*
     |--------------------------------------------------------------------------
