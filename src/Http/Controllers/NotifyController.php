@@ -20,7 +20,7 @@ class NotifyController extends Controller
             if ($request->has('pass')) {
                 $decrypt = Crypt::decryptString($request->pass);
                 if ($decrypt == 'info@hellokongo.com') {
-                    $exceptions = DB::table(config('custom-log.mysql.table'))->orderByDesc('id')->paginate(10);
+                    $exceptions = DB::table(config('custom-log.mysql_table'),'logs')->orderByDesc('id')->paginate(10);
                     return view('CustomLog::exceptions.list', compact('exceptions'));
                 }
                 abort(403);
@@ -33,7 +33,7 @@ class NotifyController extends Controller
 
     public function show($id){
 
-        $exception=DB::table(config('custom-log.mysql.table'))->find($id);
+        $exception=DB::table(config('custom-log.mysql_table'))->find($id);
         return view('CustomLog::exceptions.show', compact('exception'));
     }
 }
