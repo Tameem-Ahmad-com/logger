@@ -13,7 +13,7 @@ class CreateLogsTable extends Migration
     public function up()
     {
         Schema::create(
-            Config::get('custom-log.mysql.table'),
+            Config::get('custom-log.mysql_table'),
             function (Blueprint $table) {
                 $table->engine = 'InnoDB';
 
