@@ -61,6 +61,24 @@ AWS_SECRET_ACCESS_KEY=
 AWS_DEFAULT_REGION=
 ```
 
+## Example to handle the exception internally
+
+Disable the exception override in `custom-log.php` and use your own logic in `Exceptions/Handler.php`.
+
+The below example is handling all the database exception and ignore them to log
+
+```php
+public function register()
+{
+    $this->reportable(function (Throwable $e) {
+        if ($e instanceof QueryException) {
+           return;
+        } 
+        Notifications::error('exceptions', $e->getMessage(), $e->getTrace());
+    });
+}
+```
+
 Once installed and configured, Laravel Custom Log & Notifications will handle exception reporting and notifications automatically according to your configuration settings.
 
 👍 Happy logging and notifying with Laravel Custom Log & Notifications!
