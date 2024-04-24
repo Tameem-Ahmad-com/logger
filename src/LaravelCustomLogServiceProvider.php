@@ -122,23 +122,39 @@ class LaravelCustomLogServiceProvider extends ServiceProvider
     protected function clearLogs()
     {
         try {
+            // Fetch configuration values
+            $deleteRecordsOlderThanDays = config('custom-log.delete_records_older_than_days', null);
+            $truncateAfter = config('custom-log.truncate_after', null);
+    
             $schedule = $this->app->make(Schedule::class);
-
-            $schedule->call(function () {
-            // Disable foreign key checks temporarily
-            DB::statement('SET FOREIGN_KEY_CHECKS=0;');
-
-            // Clear the logs table
-            DB::table(config('custom-log.mysql_table'))->truncate();
-
-            // Re-enable foreign key checks
-            DB::statement('SET FOREIGN_KEY_CHECKS=1;');
-            })->monthlyOn(28, '23:59');
+    
+            $schedule->call(function () use ($deleteRecordsOlderThanDays, $truncateAfter) {
+                // Disable foreign key checks temporarily
+                DB::statement('SET FOREIGN_KEY_CHECKS=0;');
+    
+                // If delete_records_older_than_days is set and greater than 0, delete records older than the specified days
+                if ($deleteRecordsOlderThanDays && $deleteRecordsOlderThanDays > 0) {
+                    $thresholdDate = now()->subDays($deleteRecordsOlderThanDays);
+                    DB::table(config('custom-log.mysql_table'))->where('created_at', '<', $thresholdDate)->delete();
+                }
+    
+                // If truncate_after is set and greater than 0, truncate the table if the record count exceeds the threshold
+                if ($truncateAfter && $truncateAfter > 0) {
+                    $recordCount = DB::table(config('custom-log.mysql_table'))->count();
+                    if ($recordCount > $truncateAfter) {
+                        DB::table(config('custom-log.mysql_table'))->truncate();
+                    }
+                }
+    
+                // Re-enable foreign key checks
+                DB::statement('SET FOREIGN_KEY_CHECKS=1;');
+            })->daily();
         } catch (Exception $e) {
             // Log any errors
             Log::error('Error occurred while clearing logs: ' . $e->getMessage());
         }
     }
+    
 
 
     // Publishes required configuration and migration files

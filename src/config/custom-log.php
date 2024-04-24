@@ -32,6 +32,27 @@ return [
     |
     */
     'mysql_table' => 'logs',
+     /*
+    |--------------------------------------------------------------------------
+    | Delete Records Older Than Days
+    |--------------------------------------------------------------------------
+    |
+    | Specify the number of days after which records should be deleted.
+    | If set to null or 0, records will not be deleted based on days.
+    |
+    */
+    'delete_records_older_than_days' => 365,
+
+    /*
+    |--------------------------------------------------------------------------
+    | Truncate After
+    |--------------------------------------------------------------------------
+    |
+    | Specify the maximum number of records allowed in the table.
+    | If set to null or 0, truncation will not occur based on record count.
+    |
+    */
+    'truncate_after' => 1000,
 
     /*
     |--------------------------------------------------------------------------
@@ -91,7 +112,10 @@ return [
     |
     */
     'ignore_exceptions' => [
-        'Illuminate\Database\QueryException' => [123, 40001], // Example: 'ExceptionClassName' => [123, 40001]
+        Illuminate\Database\QueryException::class => [40001], // Deadlock error codes
+        Illuminate\Database\Eloquent\ModelNotFoundException::class => [],
+        PDOException::class => [1062], // SQLSTATE Integrity constraint violation error code
+        Illuminate\Queue\MaxAttemptsExceededException::class => [], // Max attempts exceeded exception
         // Add more exceptions as needed
     ],
 
