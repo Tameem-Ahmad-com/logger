@@ -6,6 +6,7 @@ use Throwable;
 use Illuminate\Database\QueryException;
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
 use Notify\LaravelCustomLog\Notifications;
+use PDOException;
 
 class Handler extends ExceptionHandler
 {
@@ -32,7 +33,7 @@ class Handler extends ExceptionHandler
                 return;
             }
 
-            Notifications::error('exceptions', $e->getMessage(), $e->getTrace());
+            Notifications::error('critical', $e->getMessage(), $e->getTrace());
         });
     }
 
@@ -45,9 +46,38 @@ class Handler extends ExceptionHandler
     private function shouldIgnoreException(Throwable $e): bool
     {
         $ignoreExceptions = config('custom-log.ignore_exceptions', []);
+        $ignoreContains = config('custom-log.ignore_contains', []);
 
+        // Check if the exception message contains any ignored substrings
+        foreach ($ignoreContains as $class => $substrings) {
+            if ($e instanceof $class && $this->containsIgnoredSubstring($e, $substrings)) {
+                return true;
+            }
+        }
+
+        // Check if the exception code matches any ignored codes
         foreach ($ignoreExceptions as $class => $codes) {
             if ($e instanceof $class && $this->isIgnoredExceptionCode($e, $codes)) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    /**
+     * Determine if the exception message contains ignored substrings.
+     *
+     * @param  \Throwable  $e
+     * @param  array  $substrings
+     * @return bool
+     */
+    private function containsIgnoredSubstring(Throwable $e, array $substrings): bool
+    {
+        $message = $e->getMessage();
+
+        foreach ($substrings as $substring) {
+            if (stripos($message, $substring) !== false) {
                 return true;
             }
         }
@@ -64,6 +94,6 @@ class Handler extends ExceptionHandler
      */
     private function isIgnoredExceptionCode(Throwable $e, array $codes): bool
     {
-        return in_array($e->getCode(), $codes);
+        return (in_array('*', $codes) || in_array($e->getCode(), $codes));
     }
 }

@@ -1,6 +1,7 @@
 <?php
 
 return [
+
     /*
     |--------------------------------------------------------------------------
     | Development Mode
@@ -32,7 +33,8 @@ return [
     |
     */
     'mysql_table' => 'logs',
-     /*
+
+    /*
     |--------------------------------------------------------------------------
     | Delete Records Older Than Days
     |--------------------------------------------------------------------------
@@ -67,6 +69,30 @@ return [
 
     /*
     |--------------------------------------------------------------------------
+    | Logging Type
+    |--------------------------------------------------------------------------
+    |
+    | This option defines the logging type for reporting.
+    | Possible values: 'log' (for logging to Laravel's default log channel)
+    | or 'exception' (for reporting exceptions).
+    |
+    */
+    'logging_type' => 'exception',
+
+    /*
+    |--------------------------------------------------------------------------
+    | Email Log Channel
+    |--------------------------------------------------------------------------
+    |
+    | Specify the log channel for reporting via email.
+    | Possible values: 'laravel' (for Laravel's default log channel)
+    | or 'custom' (for a custom log channel).
+    |
+    */
+    'channel' => ['critical'],
+
+    /*
+    |--------------------------------------------------------------------------
     | Email Settings
     |--------------------------------------------------------------------------
     |
@@ -75,8 +101,8 @@ return [
     |
     */
     'emails' => [
-        'subject' => 'Error Report',
-        'message' => 'Hi',
+        'subject' => config('app.name') . ' - Error Report',
+        'message' => '🚨 Hi',
         'cc' => ['tshahzad@computan.net']
     ],
 
@@ -109,16 +135,34 @@ return [
     |
     | Specify exception classes and error codes that should be ignored and not reported.
     | Add the fully qualified class name for exception classes, and the corresponding error codes.
-    |
+    | You can add * to ignore all the exceptions
     */
     'ignore_exceptions' => [
-        Illuminate\Database\QueryException::class => [40001], // Deadlock error codes
-        Illuminate\Database\Eloquent\ModelNotFoundException::class => [],
-        PDOException::class => [1062], // SQLSTATE Integrity constraint violation error code
-        Illuminate\Queue\MaxAttemptsExceededException::class => [], // Max attempts exceeded exception
+        Illuminate\Database\QueryException::class => [
+            23000,   // Duplicate entry error code
+            '42S02', // Table not found error code
+            '42S22', // Column not found error code
+            '42S12', // Invalid foreign key constraint error code
+            '42S21', // Foreign key constraint violation error code
+            '22001', // String data, right truncation error code
+            '22003', // Numeric value out of range error code
+            '22007', // Invalid datetime format error code
+            '22012', // Division by zero error code
+            '42000', // Syntax error or access violation error code
+            'HY000', // General error code
+        ],
+        Illuminate\Database\Eloquent\ModelNotFoundException::class => ['*'],
+        PDOException::class => ['1062'], // SQLSTATE Integrity constraint violation error code
+        Illuminate\Queue\MaxAttemptsExceededException::class => ['*'],
         // Add more exceptions as needed
     ],
 
+
+    'ignore_contains' => [
+        Illuminate\Database\QueryException::class => ['max attempt', 'string too long', 'division by zero'],
+        PDOException::class => ['Integrity constraint', 'unique constraint'],
+    ],
+    
     /*
     |--------------------------------------------------------------------------
     | Database Connection
